@@ -1,0 +1,4 @@
+Django>=3.2.4,<3.3
+# เพื่อบอก pip ซึ่งเป็น Python package manager ว่าต้องการ install อะไร version อะไร
+# ในที่นี้ก็คือต้องการ install Djago ใน version ไม่น้อยกว่าหรือเท่ากับ 3.2.4 แต่ไม่มากกว่า 3.3
+djangorestframework>=3.12.4,<3.13

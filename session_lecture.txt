@@ -1,0 +1,3 @@
+[14. Define Python requirements [Follow Along]]
+
+สร้าง requirements.txt (สร้างแบบ manual เองเลย แล้วก็เขียน dependencies เอง)

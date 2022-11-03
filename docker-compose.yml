@@ -1,0 +1,13 @@
+version: "3.9" # เป็น version ของ docker-compose syntax ที่เราจะใช้
+
+services:
+  app: # name ของ service
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./app:app" # เพื่อให้ code ที่เรา update reflect ไปที่ running container แบบ real time
+    command: > # > เหมือน | คือทำให้รันได้หลายบรรทัด
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+# เป็น command ที่จะรัน service นี้ เราสามารถ override command นี้ด้วยการรัน docker-compose run .. แต่ถ้าไม่ได้กำหนด command มันก็จะเอาตรงนี้ไปรันเป็น default

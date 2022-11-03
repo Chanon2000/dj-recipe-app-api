@@ -1,23 +1,16 @@
-# กำหนด file folder ที่จะไม่ไปรวมใน docker context เวลาถูก copy เข้าไป
 
 # Git
 .git 
-# ไม่จำเป็นต้องใส่เข้าไป เนื่องจากมันเก็บ history ทั้งหมดด้วยเลยอาจทำให้ file มันใหญ่
 .gitignore
-# ไม่จำเป็น
 
 # Docker
 .docker
-# เป็น docker hidden file
 
 # Python
 app/__pycache__/
-# มันเก็บ cache file ซึ่งไม่จำเป็น (ก็เอาออกไป เพื่อทำให้ build image มันเร็วขึ้น)
 app/*/__pycache__/
 app/*/*/__pycache__/
 app/*/*/*/__pycache__/
-# มี /*/ และ __pycache__ หลายอันเพื่อให้มั้นใจว่า
 .env/
 .venv/
 venv/
-# ไม่ต้อง copy venv ที่ local เพราะเดี๋ยวเราจะสร้างใหม่อยู่แลบ้วใน docker

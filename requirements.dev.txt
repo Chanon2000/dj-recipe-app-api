@@ -1,4 +1,1 @@
 flake8>=3.9.2,<3.10
-# เหมือนเดิมคือเราพลายามจะ install patch version (เพราะ patch version จะ up ส่วนใหญ่ก็แค่ security fixes ดังนั้นถ้ามี patch ใหม่ๆเข้ามาก็จะ install ได้เลยโดยที่ไม่หน้าทำให้ code มีปัญหา) ล่าสุดเสมอ ใน 3.9 version แต่จะไม่ up ขึ้น 3.10 
-
-# แยก file requirements เลย เพราะตอน deploy app เราไม่จำเป็นต้องมี flake8

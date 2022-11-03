@@ -1,9 +1,6 @@
-; ต้องใส่ลง app folder ไม่งั้น file ที่ exclude จะไม่ถูก select
 [flake8]
 exclude = 
     migrations,
     __pycache__,
     manage.py,
     settings.py
-
-; มันจะ exclude files เหล่านี้ออกจาก linting (การ check format code)

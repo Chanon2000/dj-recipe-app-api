@@ -1,3 +1,7 @@
-[14. Define Python requirements [Follow Along]]
+[14. Define Python requirements]
 
 สร้าง requirements.txt (สร้างแบบ manual เองเลย แล้วก็เขียน dependencies เอง)
+
+[15. Create project Dockerfile]
+
+รัน Dockerfile โดย "docker build ."

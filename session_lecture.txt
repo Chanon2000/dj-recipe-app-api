@@ -1,0 +1,22 @@
+[22. What is GitHub Actions]
+
+GitHub Actions
+    - Automation tool
+    - Similar to Travis-CI, GitLab CI/CD, Jenkins
+    - Run jobs when code changes
+    - Automate tasks
+
+Common uses เช่น
+    - Deployment (course นี้จะไม่สอน Deploy เพราะมันเยอะและซับซ้อน)
+    - Code linting
+    - Unit tests
+
+๋How it works
+    - Trigger: เช่น Push to GitHub
+    - Job: Run unit tests
+    - Result: Success/fail
+
+Pricing
+    - Charged per minutes
+    - 2,000 free minutes
+    - Various plans available

@@ -30,3 +30,8 @@ Testing (ใช้ Django test suite)
 รัน command นี้เพื่อรัน flake8
 'docker-compose run --rm app sh -c "flake8"'
 จะต้องไม่มี error เพราะเรายังไม่มี code ซัก file เลย
+
+[19. Create Django project]
+สร้าง project โดยใช้ docker-compose
+โดยสร้าง Project ชื่อ app แล้ว . คือให้มันสร้างใน current dir (เรา bind mount ที่ app folder ดังนั้น . ก็คือ app folder เลย)
+'docker-compose run --rm app sh -c "django-admin startproject app ."'

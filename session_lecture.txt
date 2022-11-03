@@ -21,3 +21,12 @@ Testing (ใช้ Django test suite)
     - Setup tests per Django app
     - Run tests through Docker Compose
         'docker-compose run --rm app sh -c "python manage.py test"'
+
+[18. Configure flake8]
+
+เมื่อ config เสร็จลองรัน เพื่อดูว่า build เพื่อ check ว่ามี ิbuild ได้มั้ย
+"docker-compose build"
+
+รัน command นี้เพื่อรัน flake8
+'docker-compose run --rm app sh -c "flake8"'
+จะต้องไม่มี error เพราะเรายังไม่มี code ซัก file เลย

@@ -11,20 +11,29 @@ ENV PYTHONUNBUFFERED 1
 # เพื่อบอก python ว่าไม่ต้อง buffer output ซึ่งจะทำให้ output จาก python ถูก print ลง console อย่างรวดเร็วแบบไม่มี delay
 
 COPY ./requirements.txt /tmp/requirements.txt
+# เอาไปไว้ที่ /tmp หมายถึง temporary files เพื่อจะได้ลบออกง่ายๆ
+COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 EXPOSE 8000
+
+ARG DEV=false
+# กำหนดตัวแปร DEV ให้ value default เป็น false (ถ้ามี value มาจาก docker-compose มันก็จะ override value นี้)
 
 # เอาทุก command ที่จะรัน มันทำใน RUN block นี้เลย
 # เนื่องจาก docker จะสร้าง new image layer ในทุก command ที่เราทำใน dockerfile ดังนั้นเพื่อให้ image ดู lightweight เราเลยสั่ง RUN command แค่อันเดียว แล้วเขียนทำหลายๆ python command โดยใส่ \ เพื่อให้เขียนได้หลายๆบรรทัด
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
+    if [ $DEV = "true" ]; \
+        then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
+    fi && \
     rm -rf /tmp && \
     adduser \
         --disabled-password \
-        --on-create-home \
+        --no-create-home \
         django-user
+    # ที่เห็น if [ $DEV = "true" ]; ... คือ shell script (fi คือ การจบ if นะ) (shell condition)
 # เราทำการ RUN command ใน alpine image ที่เราใช้ในการ build image ของ project
 # python -m venv /py เพื่อสร้าง virtual environment เพื่อเก็บ dependencies (ซึ่งจริงๆเราสามารถเก็บ python dependencies ที่ image base ได้แค่ในบาง case เก็บไว้ใน image เลยอาจทำให้ conflict กับ dependencies ใน project ได้ เพื่อลดความเสี่ยงก็เก็บลง vm เลยดีกว่า ซึ่งมันไม่ได้เพิ่มทรัพยากรมากนัก (ทำแบบนี้(vm)เพื่อ safeguards against any conflicting dependencies กับ base image))
 # /py/bin/pip install --upgrade pip => เริ่มจาก full path จาก vm เข้า pip dir (ของ vm) แล้วทำการ upgrade PIP ใน vm

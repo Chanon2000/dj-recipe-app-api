@@ -5,3 +5,19 @@
 [15. Create project Dockerfile]
 
 รัน Dockerfile โดย "docker build ."
+
+[17. Linting and Tests]
+
+What is Linting? (Linting คือประเภทของ tools ที่เอาไว้ทำการ formatting code)
+    - Tool to check code formatting
+    - Highlights errors, typos, formatting issues
+
+How we'll handling Linting (ใช้ flake8 package)
+    - Instal flake8 package
+    - Run flake8 through Docker Compose โดย
+        'docker-compose run --rm app sh -c "flake8"'
+
+Testing (ใช้ Django test suite)
+    - Setup tests per Django app
+    - Run tests through Docker Compose
+        'docker-compose run --rm app sh -c "python manage.py test"'

@@ -51,3 +51,10 @@ Writing tests
 เมื่อเขียน test เสร็จแล้วก็ รัน test ใน docker 
 'docker-compose run --rm app sh -c "python manage.py test"' => ก็จะเห็นว่าผ่านหรือไม่ผ่าน
 sh -c => คือ  shell command
+
+[28. Write a test using TDD]
+
+คือเริ่มจาก
+    1. Create test ก่อน
+    3. ลองรัน python manage.py test โดย docker compose จะเห็น error เพื่อ test ไม่ผ่าน
+    2. Add functionality ที่ทำให้ test ผ่าน

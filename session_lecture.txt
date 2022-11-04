@@ -78,3 +78,9 @@ Environment variables (เราจะใช้ env var ยังไงบ้า
 
                 * นี้คือข้อดีของการใช้ docker เพราะ dependencies เหล่านี้จะได้ไม่ต้องถูก install ลงเครื่องของคุณ แต่ install ที่ docker image แทน มันจะทำให้คุณ clean dependencies ได้ง่าย
 
+[35. Install PostgreSQL database adaptor]
+
+เมื่อปรับ Dockerfile และ requirements เสร็จก็รัน คำสั่งดังนี้
+
+"docker-compose down" => เพื่อ clear container ใหม่
+"docker-compose build" => เพื่อทำการ build image ใหม่

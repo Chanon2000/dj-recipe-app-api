@@ -58,3 +58,31 @@ sh -c => คือ  shell command
     1. Create test ก่อน
     3. ลองรัน python manage.py test โดย docker compose จะเห็น error เพื่อ test ไม่ผ่าน
     2. Add functionality ที่ทำให้ test ผ่าน
+
+[29. Mocking]
+
+What is Mocking?
+    - Override or change behaviour of dependencies
+    - Avoid unintended side effects
+    - Isolate code being tested
+
+Why use mocking?
+    - Avoid relying on external services (หลีกเลี่ยงการใช้ service จากภายนอก)
+        เนื่องจาก external services ทำให้เกิดปัญหาคือ
+        - Can't guarantee they will be avaliable
+        - Makes tests unpredictable and inconsistent
+    - Avoid unintended consequences เช่น
+        - อาจไปส่ง email โดยอุบัติเหตุ ทุกครั้งที่รัน test
+        - Overloading external services
+    - Speed up tests (ไม่ต้อง sleep() จริงๆ แล้ว mock เอาเป็นต้น)
+
+Example
+    เมื่อเราต้องการ test func ชื่อ register_user โดย func นี้จะเรียงเรียก func ตามลำดับดังนี้
+    register_user() -> create_in_db() -> send_welcome_email()
+
+    เมื่อ test เราควรจะหลีกเลี่ยงการส่ง email ให้ user ทำใด้โดย mock send_welcome_email() function เพื่อป้องกันไม่ให้ส่ง email จริงๆ
+
+How to mock code?
+    - Use "unittest.mock"
+        - MagicMock / Mock - Replace real objects
+        - patch - Overrides code for tests

@@ -104,3 +104,17 @@ Django มีสิ่งที่เรียกว่า Django REST Framework
         - Create client (เพื่อใช้ในการทดสอบเช่นเอามาสร้าง request)
         - Make request
         - Check result (จาก res ที่ return มาจาก api)
+
+[31. Common testing problems]
+
+Common Issues
+    - test ไม่รันตามที่คาดหวังเอาไว้ (เขียนไว้หลาย test แต่พอรันแล้ว กลับไม่รันซัก test)
+    - หรือรันน้อยกว่าที่เขียนเอาไว้ (คือรันแค่บาง test แต่ดันไม่รันทั้งหมด)
+    มันเป็นปัญหาเพราะว่ามันไม่ได้แสดง error ว่าทำไมถึงไม่รัน test ของคุณ
+
+    Possible reasuns for tests not running
+        - ลืมใส่ __init__.py in tests/ dir
+        - indentation (เยื้อง) ของ test case (เช่นลืมเยื้อง ใน python หรือเยื้องเยอะไปทำให้ def อยู่ใน def อีกที มันก็เลยไม่รัน test)
+        - Missing "test" prefix for method (ชื่อของ test method ต้องขึ้นต้นด้วย test)
+        - ImportError when running tests
+            - มีทั้ง tests/ และ tests.py ทำให้ ImportError error ได้

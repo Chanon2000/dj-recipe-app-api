@@ -131,3 +131,16 @@ Environment variables (เราจะใช้ env var ยังไงบ้า
 
 เขียน test เสร็จแบบ TDD ก็ลองรัน เพื่อทำการรัน test
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[40. Add wait_for_db command]
+
+เมื่อเขียน code เสร็จแล้วลงรัน test
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+เมื่อ test success ก็ทำการทดสอบรัน command wait_for_db จริงๆเลย
+'docker-compose run --rm app sh -c "python manage.py wait_for_db"'
+
+ลอง command นี้ เพื่อทำการรันทั้ง wait_for_db และ flake8
+'docker-compose run --rm app sh -c "python manage.py wait_for_db && flake8"'
+
+ใส่ "# noqa" เพื่อบอกให้ flake8 ไม่ต้องสนใจ error

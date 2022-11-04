@@ -25,7 +25,7 @@ class CommandTests(SimpleTestCase):
         # ซึ่งในนี้ก็จะทำการเรียก check method ด้วย 
 
         # ทำการ test ว่า check method (ที่ถูกเรียกใน wait_for_db นั้น)ถูกเรียกด้วย parameters คือ database=['default'] หรือป่าว (คือทำการ test ว่า check method มัน calling ถูกที่หรือป่าว)
-        patched_check.assert_called_once_with(database=['default']) # check the default database
+        patched_check.assert_called_once_with(databases=['default']) # check the default database
 
     # @patch('...') # ถ้ามีอีก patch ตรงนี้ args ที่รับ patch นี้จะไปอยู่ที่ args ที่ 3 ต่อจาก sleep เพราะ sleep อยู่ใกล้กว่า
     @patch('time.sleep') # เพราะเราต้องการ apply patch นี้ให้แค่ test ตัวนี้ (เลยเอามาไว้ที่บนหัว method นี้)
@@ -50,7 +50,7 @@ class CommandTests(SimpleTestCase):
         call_command('wait_for_db') # ตรงนี้มันก็จะทำการเรียก check method ตามที่เรา custom ด้านบนด้วย
 
         self.assertEqual(patched_check.call_count, 6) # test ว่า check method มันเรียกทั้งหมด 6 ครั้งใช่มั้ย
-        patched_check.assert_called_with(database=['default']) # เพื่อ test ว่ามันเรียกถูก value หรือป่าว เหมือนอันด้านบน
+        patched_check.assert_called_with(databases=['default']) # เพื่อ test ว่ามันเรียกถูก value หรือป่าว เหมือนอันด้านบน
 
     # การ sleep
     # เพื่อให้มันรอซักแปปแล้วค่อยไป check อีกทีนั้นแหละ

@@ -40,3 +40,9 @@ Docker Hub
         - 200 pulls per 6h all to ourselves!
         - More than enough for most projects
     - Additional plans available
+
+[24. Create GitHub Actions config]
+
+.github folder ต้องเอาไว้ที่ root ของ project เลย ถึงจะใช้งานได้
+
+มันจะไม่สนเลยว่าชื่อ files ใน workflows folder มันทำงานได้หมด

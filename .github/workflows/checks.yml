@@ -1,0 +1,27 @@
+---
+# ใน --- เพื่อให้หมายถึงว่า file นี้คือ YAML file
+name: Checks
+
+on: [push]
+
+jobs:
+  test-lint:
+    name: Test and Lint
+    runs-on: ubuntu-20.04  # คือ os ของ runner ว่าเราจะรัน job บน os อะไร # ubuntu-20.04 มันมี docker และ docker-compose ให้เราแล้ว
+    steps:
+      # login เข้า docker hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # checkout code
+      - name: Checkout
+        uses: actions/checkout@v2
+      # รัน test
+      - name: Test
+        run: docker-compose run --rm app sh -c "python manage.py test" # command ที่ใช้เพื่อทำการรัน unit test ให้กับ project นี้
+      # รัน Lint
+      - name: Lint
+        run: docker-compose run --rm app sh -c "flake8"
+      # ถ้า setps ใหน fail มันก็จะทำให้ job นี้ fail ไปเลย

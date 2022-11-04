@@ -1,0 +1,47 @@
+[26. Testing in Django]
+
+"Django test framework" (คือ library ของ django ที่เราจะใช้ในการทำ unit test)
+    - Django test framework สร้างมาจาก "unittest" library อีกที
+    - Django adds features (feature ที่มีให้จาก Django)
+        - Test client - dummy web browser (ที่รัน runserver command นั้นแหละ)
+        - Simulate authentication
+        - Temporary database
+    - Django REST Framework adds features (features ที่ได้จาก Django REST Framework)
+        - API test client
+
+Where do you put tests?
+    - Placeholder tests.py added to each app (มันจะมี test.py มาให้เพื่อให้เราเพิ่ม test ได้)
+    - Or, create tests/ subdirectory to split tests up
+    - Keep in mind:
+        - Only use tests.py or tests/ directory (not both)
+        - Test modules must start with test_
+        - Test directories must contain __init__.py (เพราะ init file นี้จะทำให้ django หา test file เจอ แแล้วเอาไปใช้งาน)
+
+Test Database
+    - Test code that uses the DB
+    - Specific database for tests (Django มันจะสร้าง database สำหรับการทดสอบให้เรา)
+        Runs test -> Clears data (ลบ data ที่ทำการทดสอบเสร็จแล้ว) จากนั้นเมื่อทดสอบอีกที่ก็จะสร้างใหม่แล้วลบให้เราเช่นเดิม
+    - Happens for every test (by default)
+
+Test classes (มี class ต่างๆที่ใช้สำหรับการ test ใน Django)
+    "StmpleTestCase" (เหมาะสำหรับ test case ที่ไม่ต้องมี database)
+        - No database integration
+        - Useful if no database is required for your test
+        - Save time executing tests
+    "TestCase" (เป็นตัวหลักที่จะใช้ แต่เป็น case ที่มี database ได้)
+        - Database integration
+        - Useful for testing code that uses the database
+
+Writing tests
+    - Import test class
+        - SimpleTestClass - No database
+        - TestClas - Database
+    - Import objects to test
+    - Define test class
+    - Add test method
+    - Setup inputs
+    - Execute code to be tested (เอา method ที่จะทดสอบ มาเรียกตรงนี้)
+    - Check output 
+
+ใช้ command นี้ในการรัน test
+"python mange.py test"

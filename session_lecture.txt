@@ -115,3 +115,14 @@ Environment variables (เราจะใช้ env var ยังไงบ้า
         ซึ่งเมื่อเราสร้าง Django command นี้
 
         เมื่อ app start มันจะทำการไป check database ด้วย method เช่น wait_for_db ซึ่งก็จะเรียกเรื่อยๆจนกว่า database จะพร้อม แล้ว app ก็จะทำการ connect กับ database ตอนนั้นแทน (ซึ่งทำให้ app ของเราไม่ crashed)
+
+[38. Create core app]
+
+เราจะสร้าง app ชื่อ core 
+'docker-compose run --rm app sh -c "python manage.py startapp core"'
+
+เราสามารถลบ test file ที่สร้างมาต้องสร้าง core app ได้เลย เพราะเราจะไม่ทำมันตรงนี้
+
+และลบ views.py ด้วย เพราะ core app ของเราจะไม่ทำเกี่ยวกับการ serve web views ซึ่งจากเราจะใช้มันทำเกี่ยวกับ models, App Management Command
+
+จากนั้นก็ทำการสร้าง tests folder และ __init__.py ลงใน core

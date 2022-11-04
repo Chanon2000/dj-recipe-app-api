@@ -1,0 +1,21 @@
+[32. Database architecture overview]
+
+Database ที่จะใช้คือ 
+    - PostgreSQL
+        - Popular open source DB
+        - Integrates well with Django
+    - ซึ่งจะรันโดยใช้ Docker Compose โดยจะใช้ทำอะไรหลายอย่างดังนี้
+        - Defined with project (re-usable)
+        - Persistent data using volumes
+        - Handles network configuration
+        - Environment variable configuration
+
+        โดย Architecture ที่จะทำใน Docker Compose คือ
+            - Database (PostgreSQL)
+            - App (Django)
+
+            2 service จะสื่อสารกันเช่น read และ write data บน Postgres database ได้
+
+        Volumes
+            - Persistent data
+            - Maps directory in container to local machine

@@ -86,3 +86,21 @@ How to mock code?
     - Use "unittest.mock"
         - MagicMock / Mock - Replace real objects
         - patch - Overrides code for tests
+
+[30. Testing web requests]
+
+Testing APIs (สิ่งที่ต้องทำเมื่อ test api)
+    - Make actual request (ทำ request)
+    - Check result (แล้วตรวจสอบผลลัพท์)
+
+Django มีสิ่งที่เรียกว่า Django REST Framework APIClient
+    - Based on the Django's TestClient (คือตัวนี้ทำมาจาก Django's TestClient)
+    - ทำให้เราสามารถสร้าง request ได้ (Make requests)
+    - Check result
+    - override authentication (คือทำ authen ที่ code เพื่อทดสอบเลยได้)
+
+    Using the APIClient
+        - Import APIClient
+        - Create client (เพื่อใช้ในการทดสอบเช่นเอามาสร้าง request)
+        - Make request
+        - Check result (จาก res ที่ return มาจาก api)

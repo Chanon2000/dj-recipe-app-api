@@ -46,3 +46,7 @@ Docker Hub
 .github folder ต้องเอาไว้ที่ root ของ project เลย ถึงจะใช้งานได้
 
 มันจะไม่สนเลยว่าชื่อ files ใน workflows folder มันทำงานได้หมด
+
+[25. Test GitHub Actions]
+
+จะเห็นว่า steps ชื่อ Set up job จะเป็น step ที่ github เพิ่มมาให้เราแบบ auto

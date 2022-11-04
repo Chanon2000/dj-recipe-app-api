@@ -45,3 +45,9 @@ Writing tests
 
 ใช้ command นี้ในการรัน test
 "python mange.py test"
+
+[27. Write a test]
+
+เมื่อเขียน test เสร็จแล้วก็ รัน test ใน docker 
+'docker-compose run --rm app sh -c "python manage.py test"' => ก็จะเห็นว่าผ่านหรือไม่ผ่าน
+sh -c => คือ  shell command

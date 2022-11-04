@@ -12,3 +12,25 @@ services:
       - ./app:/app 
     command: > 
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    # กำหนด env เพื่อใช้ใน database connection ที่ app
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db # ต้อง start db service ก่อน ถึงจะ start app service (ถ้า db fail นั้น app ก็จะไม่เริ่มทำงานแน่นอน)
+
+  db:
+    image: postgres:13-alpine # เป็น image ที่มาจาก docker hub: https://hub.docker.com/_/postgres/tags?page=1&name=13-alpine
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    environment: # คือตัวแปรเพื่อทำการ inital database 
+    # สิ่งที่เรากำหนดคือ dev credentials for the local development
+      - POSTGRES_DB=devdb # คือชื่อ database ของเรา
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+      # ไม่ต้องกังวลเรื่อง user, pass มากเพราะมันไม่ได้เป็น public database
+  
+volumes:
+  dev-db-data:

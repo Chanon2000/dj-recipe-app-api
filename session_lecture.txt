@@ -19,3 +19,8 @@ Database ที่จะใช้คือ
         Volumes
             - Persistent data
             - Maps directory in container to local machine
+
+[33. Add database service]
+
+เขียน docker-compose เสร็จก็ทำการรัน
+"docker-compose up"

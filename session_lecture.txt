@@ -84,3 +84,7 @@ Environment variables (เราจะใช้ env var ยังไงบ้า
 
 "docker-compose down" => เพื่อ clear container ใหม่
 "docker-compose build" => เพื่อทำการ build image ใหม่
+
+[36. Configure database in Django]
+
+ลบ db.sqlite file ออกไดเลยเพราะเราไม่ได้ใช้

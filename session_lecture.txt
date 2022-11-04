@@ -24,3 +24,57 @@ Database ที่จะใช้คือ
 
 เขียน docker-compose เสร็จก็ทำการรัน
 "docker-compose up"
+
+[34. Database configuration with Django]
+
+Steps for configuring database
+    - Configure Django
+        - Tell Django how to connect
+    - Install database adaptor dependencies
+        - Install the tool Django uses to connect
+    - Update Python requirements (เพราะเราเพิ่ม Postgres adapter เข้ามาเป็นต้น)
+
+Django ต้องรู้อะไรบ้างเพื่อ connect กับ database (กำหนดใน settings.py)
+    - Engine (type of database)
+    - Hostname (IP or domain name for database)
+    - Port (default ของ postgres คือ 5432)
+    - Database Name
+    - Username
+    - Password
+
+Environment variables (เราจะใช้ env var ยังไงบ้าง)
+    เราจะกำหนด env var ใน docker-compose แล้วใส่ลง python
+    - Pull config values from environment variables
+    - Easily passed to Docker
+    - Used in local dev or prod
+    - Single place to configure project
+    - Easy to do with Python => os.environ.get('DB_HOST')
+
+    "Psycopy2" package => คือ connect Django กับ database (database adapter)
+        - Most popular PostgreSQL adaptor for Python
+        - Supported by Django
+
+        มีหลายวิธีในการ install Psycopy2 เช่น
+            "psycopy2-binary"
+                - OK for development
+                - Not good for production (เพราะมันไม่ค่อย optimize ต่อ os ที่ install แล้วก็ running มากนัก)
+            "psycopg2"  (install โดยใช้ pip ได้เลย) (เราจะใช้อันนี้ใน course เรียน)
+                - Compiles from source (compile มาจาก source code) (ถ้าเรา install ลง Linux มันก็จะ compile แบบที่ Linux ต้องการ นั้นคือ optimize ให้ os ที่ install แล้ว)
+                - ข้อเสียคือ: Required additional dependencies (เราต้อง install อย่างอื่นเพิ่มเพื่อ compile)
+                    # นี้คือเหตุผลว่าทำไมหลายคนถึงไปใช้ psycopy2-binary นั้นเป็นเพราะว่ามันไม่ต้องการ การ compile ซึ่งมันสามารถทำงานได้ดีในทุก machine แต่จะไม่ optimize มาก
+                - install ง่ายบน docker (เพราะเราไม่ต้องสนว่าเครื่องเราจะเป็น os อะไร เพราะเรารันใน docker แล้วใช้ image เพื่อจัดการให้เราเองเลย)
+
+                Installing Psycopy2
+                จะมี package dependencies มากมายเพื่อที่จะ install Psycopy2 ได้แก่
+                    - C compiler
+                    - python3-dev
+                    - libpg-dev
+
+                และนี้คือ list ของ package ที่ควร install เมื่อเราใช้ Psycopy2 ใน Alpine image
+                    - postgresql-client
+                    - build-base
+                    - postgresql-dev
+                    - musl-dev
+
+                * นี้คือข้อดีของการใช้ docker เพราะ dependencies เหล่านี้จะได้ไม่ต้องถูก install ลงเครื่องของคุณ แต่ install ที่ docker image แทน มันจะทำให้คุณ clean dependencies ได้ง่าย
+

@@ -88,3 +88,30 @@ Environment variables (เราจะใช้ env var ยังไงบ้า
 [36. Configure database in Django]
 
 ลบ db.sqlite file ออกไดเลยเพราะเราไม่ได้ใช้
+
+[37. Fixing database race condition]
+
+ปัญหาเมื่อใช้ docker-compose รัน ซึ่งเกิดปัญหา database race condition
+    - เมื่อเรากำหนด depends_on คือมันจะมั้นใจได้ว่า db นั้นรัน แต่ไม่สามารถมั้นใจได้ว่า app จะรันเช่นกัน
+
+    การที่ database start เรียบร้อย ไม่ได้หมายความว่า มันจะพร้อมต่อการ connection เนื่องจากว่าเมื่อ service start สำเร็จมันจะใช้เวลาช่วงต่อมันในการ init postgres แล้วเมื่อเสร็จถึงจะทำการ connect ได้
+
+    ซึ่งบางที่ app อาจจะ start เสร็จแล้วทำการ connect ตอนที่ postgres ยัง start ไม่เสร็จได้ ซึ่งถ้าเกิดกรณีนี้ app ก็จะแสดง exception และอาจจะแจ้ง error ว่า ไม่เจอ database ก่อนที่ postgres จะ start success
+
+    ซึ่งเมื่อ Django app crashed เราก็คงต้อง restart service ใหม่อีกครั้ง
+
+    ปัญหานี้สามารถเกิดได้ทั้งเมื่อรัน Local และทั้ง Production
+
+    เกิดปัญหานี้ได้เมื่อ
+        - Running docker-compose locally
+        - Running on deployed environment
+
+    Solution สำหรับปัญหานี้คือ
+    - Make Django "wait for db"
+        คือ custom Django management command ที่เราจะสร้าง ที่ทำให้เรารอจนกว่า database จะพร้อมก่อนที่เราจะเริ่ม running application
+        - Check for database availability (มันจะเข้าไปตรวจสอบ database ว่าพร้อมแล้วยังเรื่อยๆ และเมื่อ database พร้อมมันก็จะทำการ continue application ให้ start)
+        # ดังนั้นเราจะได้สร้าง custom Django management command
+
+        ซึ่งเมื่อเราสร้าง Django command นี้
+
+        เมื่อ app start มันจะทำการไป check database ด้วย method เช่น wait_for_db ซึ่งก็จะเรียกเรื่อยๆจนกว่า database จะพร้อม แล้ว app ก็จะทำการ connect กับ database ตอนนั้นแทน (ซึ่งทำให้ app ของเราไม่ crashed)

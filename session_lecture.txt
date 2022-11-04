@@ -20,3 +20,23 @@ Pricing
     - Charged per minutes
     - 2,000 free minutes
     - Various plans available
+
+[23. Configuring GitHub Actions]
+
+How we'll configure GitHub Actions
+    - Create a config file at .github/workflows/checks.yml
+        - Set trigger
+        - Add steps for running testing and linting
+    - Configure Docker Hub auth (Docker Hub Authentication)
+
+Docker Hub
+    - Needed to pull base images
+    - Rate limits
+        - Anonymous: 100/6h (คือ pull ได้ 100 ครั้งทุก 6 hr)
+        - Authenticated: 200/6h (คือ login to dockerhub ทุก 6 hr)
+    - GitHub Actions uses shared IP addresses
+        - Limit applied to all users
+    - Authenticate with Docker Hub
+        - 200 pulls per 6h all to ourselves!
+        - More than enough for most projects
+    - Additional plans available

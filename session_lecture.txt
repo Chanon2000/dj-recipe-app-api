@@ -172,3 +172,10 @@ Django ORM คือ
                 -Run it after waiting for database
         - Setup database (หรือก็คือรันคำสั่งเข้าไป update database)
         - Store data
+
+[42. Update Docker Compose and CI/CD]
+
+รัน down ก่อนเพื่อ clear container
+"docker-compose down"
+
+จากนั้นก็ up เพื่อรัน container

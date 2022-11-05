@@ -11,8 +11,12 @@ services:
     volumes:
       - ./app:/app 
     command: > 
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py wait_for_db &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     # กำหนด env เพื่อใช้ใน database connection ที่ app
+
+    # เริ่มจากทำการรัน wait_for_db (เพื่อเชคว่า db เราใช้งานได้แล้วยัง จากนั้นก็ migrate แล้วก็รัน runserver)
     environment:
       - DB_HOST=db
       - DB_NAME=devdb

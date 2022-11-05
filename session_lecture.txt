@@ -42,3 +42,11 @@ What is the Django Admin?
     # Unknown field(s) (last_name, first_name, username, date_joined) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.
 
 [56. Support modifying users]
+
+แก้ทั้งแล้วแล้วลองรัน test แล้วเมื่อ success ก็กลับไปที่หนเา edit user อีกครั้งว่าเข้าได้หรือยัง (เนื่องจากคุณแก้เรื่อง field ไป) ก็จะเห็นว่ามันไม่ error แล้ว
+
+[57. Support creating users]
+
+เนื่องจากหน้า add user ที่ admin panel ยัง error เพื่อเรื่องเดิมคือ field
+
+    * นี้คือข้อดีของการเขียน test เพราะเราจะได้เห็น error อย่างรวดเร็วตอนรัน test แทนการไป error ตอน apply อย่างอื่นจริงๆ

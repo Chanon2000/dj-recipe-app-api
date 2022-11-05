@@ -35,5 +35,20 @@ class UserAdmin(BaseUserAdmin):
         (_('Important dates'), {'fields': ('last_login',)}),
     )
     readonly_fields = ['last_login'] # ทำให้แก้ไม่ได้
+    add_fieldsets = (
+        # section ที่ไม่มี title
+        (None, {
+            'classes': ('wide',), # คล้ายๆกับ ใส่ css ให้ admin panel (ไม่ได้มีอะไรมาก)
+            'fields': (
+                'email',
+                'password1',
+                'password2',
+                'name',
+                'is_active',
+                'is_staff',
+                'is_superuser',
+            ),
+        }), # อย่าลืม ใส่ , ตรงนี้ด้วย เพราะนี้เป็น tuple
+    )
 
 admin.site.register(models.User, UserAdmin) # เพื่อบอกให้ใช้ UserAdmin ใน models.User (ถ้าไม่บอกมันก็จะใช้ default)

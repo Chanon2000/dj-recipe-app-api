@@ -1,0 +1,41 @@
+[44. The Django user model]
+
+Django มี authentication มาให้ได้แก่
+    - Built in authentication system
+    - Framework for basic features
+        -Registration
+        -Login
+        -Auth
+    - Integrates with Django admin (มี django admin ให้)
+    * ทำให้เราเขียน code น้อยลง
+
+    Django user model
+        -Foundation of the Django auth system
+        -Default user model (มี user model มาให้เลย)
+            -ซึ่งมันใช้ Username แทน email
+            -ไม่ง่ายก่อนกว่า customize
+                # ถ้าระบบคุณไม่ต้องการ การ customize มาก ก็ใช้ได้เลย
+        -แต่ยังไงก็แนะนำให้สร้าง custom user model
+            -ทำให้เรา using email instead of username
+            -Future proof project for later changes to user model
+
+            How to customise user model
+                - Create model
+                    # Base from AbstractBaseUser and PermissionsMixin
+                    AbstractBaseUser 
+                        -Provides features for authentication
+                        -Doesn't include fields (เราต้องกำหนด field เอง)
+                    PermissionsMixin
+                        -Support for Django permission system
+                        -Includes fields and methods (มี field และ methods สำหรับใช้ authentication system ให้)
+                - Create custom manager
+                    # Used for CLI integration
+                - Set AUTH_USER_MODEL in settings.py.
+                    # เพื่อบอกว่าเราจะใช้ custom model
+                - Create and run migrations
+
+                Common issues (ปัญหาที่เจอเมื่อ customize Django user model)
+                    - Running migrations before setting custom model
+                        # Set custom model first
+                    - Typos in config
+                    - Indentation (เยื้อง) in manager or model

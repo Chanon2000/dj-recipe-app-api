@@ -39,3 +39,26 @@ Django มี authentication มาให้ได้แก่
                         # Set custom model first
                     - Typos in config
                     - Indentation (เยื้อง) in manager or model
+
+[45. Design custom user model]
+
+User fields
+    - email (EmailField)
+    - name (CharField)
+    - is_active (BooleanField)
+    - is_staff (BooleanField)
+
+User model manager
+    - Used to manage objects
+    - Custom logic for creating objects
+        # Hash password
+    - Used by Django CLI
+        # Create superuser
+
+BaseUserManager
+    - Base class for managing users
+    - Useful helper methods เช่น
+        -noramlize_email: for storing emails consistently
+    - Methods we'll define ได้แก่ (custom method ที่เราจะกำหนดเอง)
+        -create_user: called when creating user
+        -create_superuser: used by the CLI to create a superuser (admin)

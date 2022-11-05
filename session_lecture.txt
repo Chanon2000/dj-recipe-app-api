@@ -28,3 +28,28 @@ Options for documentation
 In this section
     - Explore tools for making documentation seamless
     - Add documentation for our API
+
+[59. Auto docs with DRF]
+
+สร้าง automated documentation ด้วย Django rest framework (DRF)
+
+Docs in DRF
+    -Docs in DRF เป็น third party library ที่ทำให้เราสามารถ Auto generate docs ซึ่งตัว lib นั้นมีชื่อว่า "drf-spectacular" หรือก็คือ django rest framework spectacular เราจะใช้ตัวนี้เพื่อทำการ document api ของเรา
+        # supports the open API 3.0 standard (คือ standard ล่าสุดในการ documenting API schemas)
+        OpenAPI Schema คืออไร
+            - คือ Standard for describing APIs
+            - Popular in industry
+            - Supported by most API documentation tools
+            - Uses popular formats: YAML/JSON
+    -Generates schema
+    -Browsable web interface
+        # Make test requests
+        # Handle auth
+
+How it works
+    1. Generate "schema" file
+    2. Parse schema into GUI
+
+Using a Schema
+    - Download and run in local Swagger instance
+    - Serve Swagger with API

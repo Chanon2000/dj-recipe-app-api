@@ -144,3 +144,31 @@ Environment variables (เราจะใช้ env var ยังไงบ้า
 'docker-compose run --rm app sh -c "python manage.py wait_for_db && flake8"'
 
 ใส่ "# noqa" เพื่อบอกให้ flake8 ไม่ต้องสนใจ error
+
+[41. Database migrations]
+
+Django ORM คือ
+    - Object Relational Mapper (ORM)
+    - Abstraction layer for data
+        -นั้นหมายความว่า Django เป็นคนจัดการ Database structure และ chnages
+        -ทำให้ Fouces on Python code (ทำให้ได้ได้เขียน sql)
+        -สามารถเปลี่ยน database ที่เชื่อม app ได้ง่าย
+
+    เราจะใช้ ORM นี้อย่างไร
+        - กำหนด models
+            -Eash model maps to a table
+            -Models contain
+                -Name
+                -Fields
+                -Other metadata
+                -Custom Python logic
+        - Generate migration files
+            -Creating migrations
+                -Ensure app is enabled in settings.py
+                -รัน Django CLI นั้นก็คือ "python manage.py makemigrations"
+                    # django มันจะฉลาดมาก มันจะทำการตรวจสอบ structure ที่เป็นอยู่แล้วทำการ update ตามที่เพิ่มเข้ามา
+            -Applying migrations
+                -"pyhon manage.py migrate"
+                -Run it after waiting for database
+        - Setup database (หรือก็คือรันคำสั่งเข้าไป update database)
+        - Store data

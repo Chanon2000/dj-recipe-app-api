@@ -24,3 +24,10 @@ What is the Django Admin?
             -"readonly_fields": fields that cannot be changed
         add page
             -"add_fieldsets": fields displayed only on add page
+
+
+[54. Write tests for listing users]
+เขียน test ก็ลองรันเพื่อให้มัน fail
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+จะ error 'django.urls.exceptions.NoReverseMatch' เพราะเรายังไม่ได้ register url เลย

@@ -40,3 +40,5 @@ What is the Django Admin?
 
 เมื่อเราไปดูข้อมูล user คนนึงจะเกิด error เพื่อเรา custom user model ไม่มีบาง field ที่ default user model มี
     # Unknown field(s) (last_name, first_name, username, date_joined) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.
+
+[56. Support modifying users]

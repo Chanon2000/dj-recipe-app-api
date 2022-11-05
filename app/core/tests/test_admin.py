@@ -39,3 +39,10 @@ class AdminSiteTests(TestCase):
 
         self.assertContains(res, self.user.name) # check ว่า page มี name ของ user อยู่มั้ย (เพราะหน้านั้นต้อง list users ทั้งหมดในระบบ)
         self.assertContains(res, self.user.email) # เช่นเดียวกับ name
+
+    def test_edit_user_page(self):
+        """Test the edit user page works."""
+        url = reverse('admin:core_user_change', args=[self.user.id]) # เนื่องจากเราเข้าหน้า edit เลยต้องระบุ id ของ user ที่จะเข้าด้วย (ดู url จาก docs)
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, 200) # check ว่า page load success ด้วย status_code=200

@@ -102,3 +102,8 @@ list volume
 
 จากนั้นเมื่อสำเร็จทั้งหมดก็ลองรัน test เพื่อ test_models
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[48. Normalize email addresses]
+
+เขียน test เสร็จก็ลองรัน test ก็จะเห็นว่า error ซึ่งถูกต้องแล้วเพราะเรายังไม่ได้ implement code
+แต่เมื่อ implement code คุณจะต้องรัน test success

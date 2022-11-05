@@ -107,3 +107,5 @@ list volume
 
 เขียน test เสร็จก็ลองรัน test ก็จะเห็นว่า error ซึ่งถูกต้องแล้วเพราะเรายังไม่ได้ implement code
 แต่เมื่อ implement code คุณจะต้องรัน test success
+
+[49. Require email input]

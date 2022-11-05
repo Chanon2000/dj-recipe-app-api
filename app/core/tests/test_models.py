@@ -42,4 +42,8 @@ class ModelTests(TestCase):
             user = get_user_model().objects.create_user(email, 'sample123') # 'sample123' คือใส่เป็น password mock ไว้เฉยๆ
             self.assertEqual(user.email, expected)
 
+    def test_new_user_without_email_raises_error(self):
+        """Test that creating a user without an email raises a ValueError."""
+        with self.assertRaises(ValueError): # เพราะเราจะ raises value error ถ้ามันได้ incorrect value email
+            get_user_model().objects.create_user('', 'test123')
 

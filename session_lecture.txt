@@ -120,3 +120,9 @@ Email: admin@example.com
 Password: 18791955
 
 จากนั้นเข้าไปที่ http://127.0.0.1:8000/admin/login/?next=/admin/ แล้วทำการ login
+
+[52. Summary of Create User Model]
+    - Create a custom user model
+    - Configured Django to use it
+    - Handle normalising email
+    - Handle encrypting passwords

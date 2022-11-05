@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    # ซึ่งเอา 2 อันนี้มาใส่เพื่อทำการ enable rest_framework และ drf_spectacular
+    'rest_framework', # เรา install package ที่เข้ามาแล้วก็มา register มันตรงนี้
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +132,9 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
+
+# เพื่อ generate schema โดยใช้ drf_spectacular
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', # อย่าลืมใส่ ,
+    # คือการ config บอกให้ Django rest framework ให้ทำการใช้ drf_spectacular.openapi.AutoSchema เพื่อทำการสร้าง schema
+}

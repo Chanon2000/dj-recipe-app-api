@@ -53,3 +53,17 @@ How it works
 Using a Schema
     - Download and run in local Swagger instance
     - Serve Swagger with API
+
+[60. Install drf-spectacular]
+
+เมื่อใส่ package ที่ต้องการเพิ่มเข้าไปที่ requirements file ก็ให้ทำการ rebuild image โดย
+'docker-compose build'
+
+drf-spectacular install
+docs: https://drf-spectacular.readthedocs.io/en/latest/readme.html#installation
+
+drf-spectacular in Python
+docs:https://pypi.org/project/drf-spectacular/
+
+drf-spectacular docs
+docs: https://drf-spectacular.readthedocs.io/en/latest/index.html

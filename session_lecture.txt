@@ -68,3 +68,37 @@ BaseUserManager
 
 เมื่อเขียน test ลองรัน เพื่อให้เห็นว่ามัน fail นั้นแหละ เพราะมันเป็นตัวยืนยันว่า test ทำการรันแล้ว
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[47. Implement user model]
+
+เมื่อเขียน model เสร็จและ setting เรียบร้อยก็ทำการรัน เพื่อทำการสร้าง migration
+'docker-compose run --rm app sh -c "python manage.py makemigrations"'
+
+ถ้า migration file ไม่ถูกสร้าง auto อาจเป็นเพราะว่า
+    1. ใน migrations folder ไม่มี __init__.py
+    2. core app ยังไม่ถูก register ที่ settings.py
+
+จากนั้นก็ทำการ migrate เข้า database
+'docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py migrate'
+โดยทำการ wait_for_db ก่อน จากนั้นก็ใส่ && เพื่อจะได้รัน command ที่ 2 นั้นก็คือ migrate
+
+ซึ่งจะ error
+"django.db.migrations.exceptions.InconsistentMigrationHistory"
+เนื่องจากว่าเรา apply migrations ก่อนหน้านี้ โดย default Django user model
+
+ดังนั้นสิ่งที่เราต้องทำคือ clear data ใน database ก่อน
+
+list volume
+"docker volume ls" จะเห็น volume ชื่อ dj-recipe-app-api_dev-db-data ที่เก็บ data ใน database ของเรา
+
+ทำการ "docker-compose down" ก่อน เพื่อให้ volume ถูกเลิกใช้เพื่อที่เราจะได้สามารถลบมั้นได้
+แล้วก็ตามด้วย "docker volume rm dj-recipe-app-api_dev-db-data" เพื่อทำการลบ volume
+
+เราทำการลบ data ที่อยู่ใน database development เรียบร้อย ก็ทำการ migrate อีกครั้ง
+'docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py migrate"'
+
+รอบนี้จะสำเร็จเรียบร้อย
+จะเห็น 'Applying core.0001_initial... OK' เป็น 1 ใน migration ที่ถูกส่งไปสร้างใน database
+
+จากนั้นเมื่อสำเร็จทั้งหมดก็ลองรัน test เพื่อ test_models
+'docker-compose run --rm app sh -c "python manage.py test"'

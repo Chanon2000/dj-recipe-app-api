@@ -31,3 +31,12 @@ What is the Django Admin?
 'docker-compose run --rm app sh -c "python manage.py test"'
 
 จะ error 'django.urls.exceptions.NoReverseMatch' เพราะเรายังไม่ได้ register url เลย
+
+[55. Make Django admin list users]
+
+ไปที่ admin.py ใน core app แล้วลบ code default แล้วเขียนใหม่
+
+เมื่อ custom แล้ว register ที่ admin เสร็จก็ลองรัน test แล้วเมื่อ test ผ่านก็เข้าไปที่หน้า admin ดูว่า Users model แสดงที่หน้า admin panel หรือยัง
+
+เมื่อเราไปดูข้อมูล user คนนึงจะเกิด error เพื่อเรา custom user model ไม่มีบาง field ที่ default user model มี
+    # Unknown field(s) (last_name, first_name, username, date_joined) specified for User. Check fields/fieldsets/exclude attributes of class UserAdmin.

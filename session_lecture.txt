@@ -1,0 +1,30 @@
+[58. Importance of API documentation]
+
+Why Document?
+    - APIs are designed for developers to use
+    - Need to know how to use it
+    - An API is only as good as its documentation
+
+What to document?
+    - Everything needed to use thr API
+    - Available endpoints (paths)
+        # /api/recipes
+    - Supported methods
+        # GET, POST, PUT, PATCH, DELETE
+    - Format of payloads (inputs)
+        # Parameters
+        # Post JSON format
+    - Format of responses (outputs)
+        # Response JSON format
+    - Authentication process
+
+Options for documentation
+    Manual (คุณต้องจัดการ update docs ทุกครั้งที่มีการ update api)
+        -Word doc
+        -Markdown
+    Automated
+        -ใช้ metadata จาก code (comments) ที่ใส่ลง python code ซึ่งมันจะทำการ Generate documentation pages
+
+In this section
+    - Explore tools for making documentation seamless
+    - Add documentation for our API

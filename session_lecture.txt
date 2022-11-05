@@ -67,3 +67,7 @@ docs:https://pypi.org/project/drf-spectacular/
 
 drf-spectacular docs
 docs: https://drf-spectacular.readthedocs.io/en/latest/index.html
+
+[61. Configure URLs]
+
+ทำการ enable url ที่ทำการ serve documentation โดยผ่าน Django

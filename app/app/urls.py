@@ -13,9 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
+
 from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/schema', SpectacularAPIView.as_view(), name='api-schema'),
+    # เพิ่มurl เข้า project โดยเมื่อเรา url นี้ SpectacularAPIView จะทำการ generate schema file คือเข้าไปดู code ของเราแล้วสร้าง schema file ให้เรา
+    path(
+        'api/docs/',
+        SpectacularSwaggerView.as_view(url_name='api-schema'), # เพื่อบอกว่าจะใช้ schema ใหนในการ loading swagger ซึ่งเราก็กำหนดเป็น schema จาก url ที่มี name ว่า api-schema
+        name='api-docs',
+    )
 ]

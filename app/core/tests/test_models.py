@@ -47,3 +47,14 @@ class ModelTests(TestCase):
         with self.assertRaises(ValueError): # เพราะเราจะ raises value error ถ้ามันได้ incorrect value email
             get_user_model().objects.create_user('', 'test123')
 
+    def test_create_superuser(self):
+        """Test creating a superuser."""
+        # create_superuser คือ method ที่เราจะเอาไว้สร้าง super user
+        user = get_user_model().objects.create_superuser(
+            'test@example.com', # email
+            'test123', # password
+        )
+
+        self.assertTrue(user.is_superuser) # เพื่อให้แน่ใจว่า is_superuser set เป็น True แล้ว (ซึ่งเป็น field ที่มาจาก PermissionsMixin) # และถ้าเป็น True คนนี้จะสามารถเข้าถึงได้ทุกอย่างใน Django app
+        self.assertTrue(user.is_staff) # เพื่อเข้าถึง django admin field นี้ต้องเป็น True
+

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import os # จะทำการ pull values จาก environment variables
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,8 +75,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': { # ความจริงสามารถ configure multi databases ได้ด้วยนะ
-        'ENGINE': 'django.db.backends.postgresql', # เป็น string value (name of the engine that we want Django to use) (ดูได้จาก doc ของ Django เพื่อ setting up database)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
         'HOST': os.environ.get('DB_HOST'),
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
@@ -128,5 +128,4 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# เพื่อกำหนด custom user model เป็น user model
 AUTH_USER_MODEL = 'core.User'

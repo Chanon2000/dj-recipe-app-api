@@ -2,9 +2,8 @@
 Tests for models.
 """
 
-from django.test import TestCase # จะเป็น base class for tests
-from django.contrib.auth import get_user_model # เป็น helper function จาก django เพื่อ get default user model ทำให้คุณสามารถอ้างถึง model จาก models.py ได้ด้วย
-# ใช้ get_user_model() เพื่อรับ custom user model (เมื่อเราใช้ django user model)
+from django.test import TestCase
+from django.contrib.auth import get_user_model
 
 
 class ModelTests(TestCase):
@@ -12,49 +11,41 @@ class ModelTests(TestCase):
 
     def test_create_user_with_email_successful(self):
         """Test creating a user with is successful."""
-        email = 'test@example.com' # แนะนำให้ลงด้วย example.com เพราะว่าเป็น domain name ที่มีไว้เพื่อสำหรับ testing (เพื่อไม่ให้บังเอินส่ง email จริงๆ)
+        email = 'test@example.com'
         password = 'testpass123'
         user = get_user_model().objects.create_user(
             email=email,
             password=password,
         )
-        # ได้ model object จากการเรียก get_user_model()
-        # .objects เพื่ออ้างถึง manager ที่เราจะสร้าง
-        # create_user เรียก create_user เพื่อสร้าง user
 
-        self.assertEqual(user.email, email) # check ว่า email ที่เก็บลง user ตรงกับ email ที่ใส่มามั้ย
-        self.assertTrue(user.check_password(password)) # check password ว่าถูกต้องตามที่กรอกมามั้ย ใช้ check_password() เพราะเป็นการ check ผ่าน hashing system นะ
-        # check_password เป็น method ที่มีมาให้ใน default model manager (base user manager) ที่เข้า add เข้า project
+        self.assertEqual(user.email, email)
+        self.assertTrue(user.check_password(password))
 
     def test_new_user_email_normalized(self):
         """Test email is normalized for new users."""
-        # เพื่อให้มั้นใจว่า ทุก email เรา normalized แล้วก่อนที่จะเข้า database
         sample_emails = [
-            ['test1@EXAMPLE.com', 'test1@example.com'], # email, expected
-            ['Test2@Example.com', 'Test2@example.com'], # capitalization in first part (เช่น Test2)ของ email จะ unique ซึ่งเป็น main standard ของทุก email providers
-            # first part ก็สามารถมีตัวพิมพ์ใหญ่ได้ แต่ last part (example.com) จะห้ามมี capitalization เราต้องการให้เป็น lowercase เสมอ
+            ['test1@EXAMPLE.com', 'test1@example.com'],
+            ['Test2@Example.com', 'Test2@example.com'],
             ['TEST3@EXAMPLE.com', 'TEST3@example.com'],
             ['test4@example.COM', 'test4@example.com'],
         ]
 
-        for email, expected in sample_emails: # เป็น python syntax ที่จะ loop list ที่มี sub element เป็น list ที่มี 2 item
-            # ซึ่งมันก็จะ assign value ที่ email, expected ให้ตามลำดับ
-            user = get_user_model().objects.create_user(email, 'sample123') # 'sample123' คือใส่เป็น password mock ไว้เฉยๆ
+        for email, expected in sample_emails:
+            user = get_user_model().objects.create_user(email, 'sample123')
             self.assertEqual(user.email, expected)
 
     def test_new_user_without_email_raises_error(self):
         """Test that creating a user without an email raises a ValueError."""
-        with self.assertRaises(ValueError): # เพราะเราจะ raises value error ถ้ามันได้ incorrect value email
+        with self.assertRaises(ValueError):
             get_user_model().objects.create_user('', 'test123')
 
     def test_create_superuser(self):
         """Test creating a superuser."""
-        # create_superuser คือ method ที่เราจะเอาไว้สร้าง super user
         user = get_user_model().objects.create_superuser(
-            'test@example.com', # email
-            'test123', # password
+            'test@example.com',
+            'test123',
         )
 
-        self.assertTrue(user.is_superuser) # เพื่อให้แน่ใจว่า is_superuser set เป็น True แล้ว (ซึ่งเป็น field ที่มาจาก PermissionsMixin) # และถ้าเป็น True คนนี้จะสามารถเข้าถึงได้ทุกอย่างใน Django app
-        self.assertTrue(user.is_staff) # เพื่อเข้าถึง django admin field นี้ต้องเป็น True
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)
 

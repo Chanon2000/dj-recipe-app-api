@@ -1,0 +1,26 @@
+[53. Django admin overview]
+
+What is the Django Admin?
+    - Graphical User Interface for models
+        # Create, Read, Update, Delete
+    - Very little coding required
+
+    เป็น feature ที่ผู้คนชอบใช้
+
+    How to enable Django admin
+        - Enabled per model
+        - Inside admin.py
+            # admin.site.register(Recipe)
+
+    Customising
+        - Create class based off ModelAdmin or UserAdmin
+        - Override/set class variables
+
+        Changing list of objects
+            -"ordering": changes order items appear
+            -"list_display": field to appear in list
+        Add/update page
+            -"fieldsets": control layout of page
+            -"readonly_fields": fields that cannot be changed
+        add page
+            -"add_fieldsets": fields displayed only on add page

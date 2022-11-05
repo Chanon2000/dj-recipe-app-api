@@ -22,7 +22,7 @@ Django มี authentication มาให้ได้แก่
             How to customise user model
                 - Create model
                     # Base from AbstractBaseUser and PermissionsMixin
-                    AbstractBaseUser 
+                    AbstractBaseUser
                         -Provides features for authentication
                         -Doesn't include fields (เราต้องกำหนด field เอง)
                     PermissionsMixin
@@ -62,3 +62,9 @@ BaseUserManager
     - Methods we'll define ได้แก่ (custom method ที่เราจะกำหนดเอง)
         -create_user: called when creating user
         -create_superuser: used by the CLI to create a superuser (admin)
+
+[46. Add user model tests]
+เริ่มจากเขียน test ก่อน โดยสร้าง test_models.py
+
+เมื่อเขียน test ลองรัน เพื่อให้เห็นว่ามัน fail นั้นแหละ เพราะมันเป็นตัวยืนยันว่า test ทำการรันแล้ว
+'docker-compose run --rm app sh -c "python manage.py test"'

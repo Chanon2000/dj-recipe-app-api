@@ -179,3 +179,12 @@ Django ORM คือ
 "docker-compose down"
 
 จากนั้นก็ up เพื่อรัน container
+"docker-compose up"
+    # เพื่อทำการรัน application และ database
+
+[43. Summary]
+In this section
+    - Configured PostgreSQL service
+    - Set Django database configuration
+    - Handled race condition
+    - Added migrations

@@ -77,3 +77,8 @@ docs: https://drf-spectacular.readthedocs.io/en/latest/index.html
 ไปที่ http://127.0.0.1:8000/api/docs/ ก็จะเจอหน้าจอ swagger เลย
 
 ถ้าเราไป click ที่ api/schema มันจะทำการ download schema เป็น file ให้เรา
+
+[63. Summary]
+    - Learnt about API documentation
+    - Implemented Swagger and OpenAPI Schema
+    - Tested documentation

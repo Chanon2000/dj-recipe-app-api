@@ -24,3 +24,6 @@ User API
 สร้าง tests folder ใน user app แล้วก็สร้าง __init__.py
 
 แล้วก็ไป register user app ลง settings.py
+
+[66. Write tests for create user API]
+'docker-compose run --rm app sh -c "python manage.py test"'

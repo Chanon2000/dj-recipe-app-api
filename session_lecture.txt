@@ -1,0 +1,12 @@
+[64. User API design]
+User API
+    - User registration
+        'user/create/'
+            POST - Register a new user
+    - Create auth token
+        'user/token/'
+            POST - Create new token
+    - Viewing/updating profile
+        'user/me/'
+            PUT/PATCH - Update profile
+            GET - View profile

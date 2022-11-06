@@ -11,6 +11,7 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create') # เพราะเราจะใช้ในหลายๆ test เลยมาวางไว้ตรงนี้
 # reverse ทำให้เราได้ url จาก name ของ view
 TOKEN_URL = reverse('user:token') # user:token หรือก็คือ  url endpoint ของเรา
+ME_URL = reverse('user:me')
 
 # สร้างเป็น helper function เพื่อเอาไปใช้ใน test ต่างๆ
 def create_user(**params): # โดย **params เพื่อให้ยืดหยุ่นในการใส่ parameter
@@ -106,3 +107,53 @@ class PublicUserApiTests(TestCase):
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_retrieve_user_unauthorized(self):
+        """Test authentication is required for users."""
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED) # เพราะเรายังไม่ได้ authorized
+
+
+# test ที่จำเป็นต้อง authorized
+# เราอยากแยกแบบนี้เพราะว่าเราจะจัดการ authentication ที่ setUp method
+class PrivateUserApiTests(TestCase):
+    """Test API requests that require authentication."""
+
+    def setUp(self):
+        self.user = create_user(
+            email='test@example.com',
+            password='testpass123',
+            name='Test Name',
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        # ใช้ force_authenticate ทำให้เราไม่ต้อง authenticate จริงๆในระบบ
+        # เราต้องแยก unit test ออกจากระบบจริง (isolate) จึงต้องทำแบบนี้เสมอ
+
+    def test_retrieve_profile_success(self):
+        """Test retrieving profile for logged in user."""
+        res = self.client.get(ME_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, { # ได้ data คนเดียวกับคนที่ authenticate อยู่หรือป่าว
+            'name': self.user.name,
+            'email': self.user.email,
+        })
+
+    def test_post_me_not_allowed(self):
+        """Test POST is not allowed for the me endpoint."""
+        res = self.client.post(ME_URL, {}) # ตั้งใจใช้ผิด method เป็น POST แทน
+
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_update_user_profile(self): # ทดสอบ update ข้อมูล user
+        """Test updating the user profile for the authenticated user."""
+        payload = {'name': 'Updated name', 'password': 'newpassword123'}
+
+        res = self.client.patch(ME_URL, payload)
+
+        self.user.refresh_from_db() # เพื่อให้ user values ใน database ถูก refreshed ให้เป็นค่าใหม่ตามที่ update (เพราะโดย default มันไม่ refreshed automatically เมื่อเรา updated data)
+        self.assertEqual(self.user.name, payload['name']) # check ว่าข้อมูลถูกเปลี่ยนตามที่ update มั้ย
+        self.assertTrue(self.user.check_password(payload['password'])) # check password ว่าถูกเปลี่ยนแล้วหรือยัง
+        self.assertEqual(res.status_code, status.HTTP_200_OK)

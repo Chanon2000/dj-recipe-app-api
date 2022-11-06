@@ -79,3 +79,7 @@ Authentication ประเภทต่างๆที่สามารถใ�
 
 [69. Write tests for token API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[70. Implement token API]
+
+'docker-compose run --rm app sh -c "python manage.py test"'

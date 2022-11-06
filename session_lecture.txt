@@ -76,3 +76,6 @@ Authentication ประเภทต่างๆที่สามารถใ�
     - Session (Session authentication)
         # คือเมื่อเรา store authentication details บน cookies (เป็นวิธีที่ใช้ป่อยในหลายๆ websites)
         # ที่ใช้เช่น Django admin อันนี้ก็ใช้ session authentication
+
+[69. Write tests for token API]
+'docker-compose run --rm app sh -c "python manage.py test"'

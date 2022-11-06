@@ -10,3 +10,17 @@ User API
         'user/me/'
             PUT/PATCH - Update profile
             GET - View profile
+
+
+[65. Create user app]
+เพื่อสร้าง app ชื่อ user
+'docker-compose run --rm app sh -c "python manage.py startapp user"'
+
+ลบ migrations folder ที่สร้างใน user app ออกได้เลย เพราะเราจจะเอาทุก migration ไว้ที่ core app
+ลบ admin.py เพื่อทุก admin เราจะเอาไปไว้ใน core app
+ลบ models.py เพื่อทุก models เราจะเอาไปไว้ใน core app
+ลบ tests.py เพราะเราจะเอาไว้ใน tests folder ใน user app นี้แหละ
+
+สร้าง tests folder ใน user app แล้วก็สร้าง __init__.py
+
+แล้วก็ไป register user app ลง settings.py

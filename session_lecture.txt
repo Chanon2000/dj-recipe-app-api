@@ -27,3 +27,13 @@ User API
 
 [66. Write tests for create user API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[67. Implement create user API]
+
+เราจะ implement code เพื่อให้ test มันผ่าน
+
+สร้าง file ชื่อ serializers.py เพื่อการสร้าง objects
+
+สร้าง urls.py ที่ user app
+
+เขียนทั้งหมดเสร็จก็ 'docker-compose run --rm app sh -c "python manage.py test"'

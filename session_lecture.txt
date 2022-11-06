@@ -37,3 +37,42 @@ User API
 สร้าง urls.py ที่ user app
 
 เขียนทั้งหมดเสร็จก็ 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[68. Authentication]
+
+Authentication ประเภทต่างๆที่สามารถใช้ได้ใน Django api
+    - Basic
+        # ส่ง username และ password ไปในทุกๆ request (เป็นวิธีที่แย่มากๆ เพราะ client ต้องเก็บ user, pass)
+    - Token (ใช้ token ในการ authentication) (เราจะใช้อันนี้ใน course นี้)
+        # generate token จาก user, pass แส้วใส่ให้กับทุก request ในการ authentication
+        เมื่อใช้ที่ Django เราไม่จำเป็นต้อง install อะไรเพิ่มเติม
+
+        How it works (Token authentication)
+            -Create token (Post username/password)
+            -Store token on client (อาจเก็บที่ Session storage, Local storage, Cookie, Database(ถ้าใช้บน Desktop app))
+            -Include token in HTTP headers
+
+        Pros and cons
+            Pros
+            -Supported out of the box (คือ Django มี feature นี้ให้เลย เราไม่ต้อง install อะไรเพิ่ม)
+            -Simple to use
+            -Supported by all clients
+            -Avoid sending username/password each time
+            Cons
+            -Token needs to be secure
+                # เพราะถ้าคนอื่นสามารถเข้าถึง token ของคุณได้ เขาสามารถเอา token ของคุณไปสร้าง request ได้
+            -Requires database requests
+                # มันต้องสร้าง request เพื่อเข้าไป check กับ database ว่า token ถูกต้องมั้ย ซึ่งนี้อาจเป็นข้อเสียเมื่อ web เรามีผู้ใช้เยอะๆ เพราะมันจะทำให้สร้าง request มาก กรณีนี้ควรไปใช้ JWT
+        Logging out
+            -จะเป็นกระบวนการของ client side
+            -ที่ api ควรจะทำการ Delete token
+
+            * ทำไมเราถึงไม่มี logout API
+                -เพราะ logut api เชื่อถือไม่ได้ (Unreliable) และไม่มีเหตุผลที่จะสร้างมัน (Not useful on API)
+                    # เช่น เมื่อ user load app ที่เป็น mobile หรือ frontend มา จากนั้นทำการ login เมื่อ login เสร็จก็ลบ app ทิ้งเลย นั้นทำให้ user ยังไม่ได้ logout (ถ้าระบบเรา logout ผ่าน api)
+
+    - JSON Web Token (JWT) (ซึ่งก็คล้ายกับการใช้ token)
+        # มันทำงานโดยใช้ refresh and access token ซึ่ง refresh token เป็น token ที่ต้องการ verification of the user's credentials
+    - Session (Session authentication)
+        # คือเมื่อเรา store authentication details บน cookies (เป็นวิธีที่ใช้ป่อยในหลายๆ websites)
+        # ที่ใช้เช่น Django admin อันนี้ก็ใช้ session authentication

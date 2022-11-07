@@ -4,7 +4,7 @@ Tests for models.
 from decimal import Decimal # เป็น class ที่มาจาก Django
 
 from django.test import TestCase
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model # ที่เราใช้ get_user_model แทน models นั้นเป็นเพราะว่า ถ้าเราเปลี่ยน custom user model เป็น Model อื่น ทุกที่จะเปลี่ยนตามเพราะเราใช้ get_user_model ดึงมาอีกที
 
 from core import models # ก่อนหน้านี้เราใช้ user models จาก get_user_model เราเลยพึงมา import models ตอนนี้
 

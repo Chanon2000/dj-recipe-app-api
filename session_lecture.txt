@@ -45,3 +45,13 @@ What is a view?
 
 [77. Write test for recipe model]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[78. Implement recipe model]
+เมื่อสร้าง recipe model เสร็จก็รัน
+'docker-compose run --rm app sh -c "python manage.py makemigrations"'
+
+ซึ่งคุณก็จะเห็นมี file migration เพิ่มที่ core/migrations
+
+ทำการรัน test
+'docker-compose run --rm app sh -c "python manage.py test"'
+สังเกตว่า test ผ่านทั้งๆที่ยังไม่ได้ apply migration ที่สร้างไป นั้นเป็นเพราะว่า Django test runner จะ automatically apply ทุก migrations ทุกครั้งที่รัน test โดยเมื่อรันเสร็จก็จะ clear ท้งหมดใน database (เป็น mock up database) และ reapply อีกครั้งทุก migrations ทุกกับรัน test ใน test suite

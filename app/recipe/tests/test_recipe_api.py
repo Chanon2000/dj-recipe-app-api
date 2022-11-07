@@ -12,9 +12,16 @@ from rest_framework.test import APIClient
 
 from core.models import Recipe
 
-from recipe.serializers import RecipeSerializer
+from recipe.serializers import (
+    RecipeSerializer,
+    RecipeDetailSerializer, # เป็น serializer ที่จะแสดง field เพิ่มขึ้นมา (แสดงข้อมูลเพิ่มขึ้น เพิ่ม detail นั้นแหละ เกี่ยวกับ recipe ที่ระบุ)
+)
 
 RECIPES_URL = reverse('recipe:recipe-list')
+
+def detail_url(recipe_id): # เราทำเป็น function เพราะเราต้องการจะใส่ id เข้าไปใน url และการทำเป็น function ทำให้เราไม่ต้อง head code reverse บ่อยๆ
+    """Create and return a recipe detail URL."""
+    return reverse('recipe:recipe-detail', args=[recipe_id])
 
 
 def create_recipe(user, **params): # คือ helper function ในการสร้าง recipe
@@ -93,3 +100,12 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
+    def test_get_recipe_detail(self):
+        """Test get recipe detail."""
+        recipe = create_recipe(user=self.user)
+
+        url = detail_url(recipe.id)
+        res = self.client.get(url)
+
+        serializer = RecipeDetailSerializer(recipe)
+        self.assertEqual(res.data, serializer.data) # check ว่า recipe ที่ได้จาก api กับ ที่ serializer ตรงนี้เลย เหมือนกันหรือป่าว (เพราะใน api ก็ทำ serializer เหมือนกัน)

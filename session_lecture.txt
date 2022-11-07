@@ -108,3 +108,13 @@ Authentication ประเภทต่างๆที่สามารถใ�
 
 แล้ว paste token ใส่ลงไปใน tokenAuth เช่น
 'Token fe71d030d90ac2182d45ee070f0f95afaa2850a4'
+
+[74. Summary]
+
+What we covered
+    - Designed our user API
+    - Created separate app
+    - Implemented create user API
+    - Authentication
+    - Managing profile
+    - Reviewed API in browser

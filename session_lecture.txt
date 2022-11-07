@@ -41,3 +41,7 @@ What is a view?
             -Viewsets มักจะให้เรากำหนด models ใน project เรา
             -สามารถใช้ Routers เพื่อสร้าง URLs
             -Great for CRUD operations on models
+
+
+[77. Write test for recipe model]
+'docker-compose run --rm app sh -c "python manage.py test"'

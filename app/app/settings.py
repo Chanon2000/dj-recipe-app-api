@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'rest_framework',
-    'rest_framework.authtoken', # authtoken มันอยู่ใน rest_framework ก็จริงแต่ว่ามันเป็น app ของมันเอง เราเลยต้อง register (หรือจะเรียกว่าทำการ enable ก็ได้) มันแยกอีกที่ เมื่อต้องการจะใช้มัน
+    'rest_framework.authtoken',
     'drf_spectacular',
     'user',
 ]

@@ -1,0 +1,17 @@
+[75. Recipe API design]
+
+Features
+    - Create
+    - List
+    - View detail
+    - Update
+    - Delete
+
+Endpoints
+    - /recipes/
+        GET - List all recipes
+        POST - Create recipes
+    - /recipes/<recipe_id>/
+        GET - View details of recipe
+        PUT/PATCH - Update recipe
+        DELETE - Delete recipe

@@ -15,3 +15,29 @@ Endpoints
         GET - View details of recipe
         PUT/PATCH - Update recipe
         DELETE - Delete recipe
+
+[76. APIView vs Viewsets]
+APIView กับ Viewsets ต่างกันยังไง
+
+What is a view?
+    - Handles a request made to a URL (จัดการ request ที่ส่งมาผ่าน url)
+    - Django uses functions (คือ Django มอง function ของ python ที่รับ request argument เป็น view)
+    - DRF uses classes (drf จะใช้ class แทน function)
+        -ทำให้เราไม่ต้องเขียน logic บางส่วนเอง
+        -เราสามารถ override class เหล่านั้นได้เพื่อ custom
+    - DRF also supports decorators (ซึ่งเอาจริงไม่ต้องใช้ก็ได้ถ้าเราสร้าง simple APIs)
+    - APIView และ Viewsets คือ "DRF base classes"
+        "APIView" (คือที่เราใช้สร้าง authentication endpoints ในก่อนหน้านี้)
+            -จะfocusที่ http methods
+                # GET, POST, PUT, PATCH, DELETE
+            -Provide flexibility over URLs and logic
+            -Useful for non CRUD APIs
+                -ทำให้เราไม่ต้องเขียน simple Create, Read, Update, Delete APIs
+                -Bespoke logic (eg: auth, jobs, external apis)
+        "Viewsets"
+            -จะfocusที่ actions
+                # Retrieve(GET), list(GET), update(PUT), partial update(PATCH), destroy(DELETE)
+                # โดย actions พวกนี้ก็จะ map กับ http request ตามที่วงเล็บไว้
+            -Viewsets มักจะให้เรากำหนด models ใน project เรา
+            -สามารถใช้ Routers เพื่อสร้าง URLs
+            -Great for CRUD operations on models

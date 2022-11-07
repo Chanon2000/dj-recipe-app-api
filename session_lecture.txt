@@ -55,3 +55,16 @@ What is a view?
 ทำการรัน test
 'docker-compose run --rm app sh -c "python manage.py test"'
 สังเกตว่า test ผ่านทั้งๆที่ยังไม่ได้ apply migration ที่สร้างไป นั้นเป็นเพราะว่า Django test runner จะ automatically apply ทุก migrations ทุกครั้งที่รัน test โดยเมื่อรันเสร็จก็จะ clear ท้งหมดใน database (เป็น mock up database) และ reapply อีกครั้งทุก migrations ทุกกับรัน test ใน test suite
+
+[79. Create recipe app]
+
+เราจะสร้าง recipe app เพื่อเก็บ code สำหรับ recipe endpoints
+'docker-compose run --rm app sh -c "python manage.py startapp recipe"'
+
+ซึ่งมี default file  หลายอันที่เราจะไม่ใช้ โดยให้ลบไปเลยได้แก่
+- migrations folder
+- admin.py
+- models.py (เพราะเราจะ core app เก็บ models)
+- tests.py (เพราะเราจะสร้าง folder tests ใน recipe เอาไว้เก็บ tests แทน)
+
+จากนั้นสร้าง tests folder

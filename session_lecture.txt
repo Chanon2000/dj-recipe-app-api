@@ -81,7 +81,10 @@ Authentication ประเภทต่างๆที่สามารถใ�
 'docker-compose run --rm app sh -c "python manage.py test"'
 
 [70. Implement token API]
-
 'docker-compose run --rm app sh -c "python manage.py test"'
 
 [71. Write tests for manage user API]
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+[72. Implement manage user API]
+'docker-compose run --rm app sh -c "python manage.py test"'

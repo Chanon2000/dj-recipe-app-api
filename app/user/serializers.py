@@ -32,6 +32,23 @@ class UserSerializer(serializers.ModelSerializer):
         # ซึ่งเนื่องจากเรามี password มันก็จะ save password เราเป็น clear text ในmodel ซึ่งเราไม่ต้องการแบบนั้น เลย override เป็น save ผ่าน create_user method แทน โดยไม่เรียก base create method ให้ทำงานเลย (super().create())
         return get_user_model().objects.create_user(**validated_data)
 
+    # override update method (ที่อยู่ใน ModelSerializer)ถ้าไม่ override มันก็จะเก็บ password เป็น clear text
+    # ซึ่งจะถูกเรียกเมื่อเรา update object
+    def update(self, instance, validated_data):
+        # instance คือ model instance ที่จะถูก update
+        # validated_data คือ data ที่จะเอามา update ให้กับ instance (โดยมันต้องถูก validated ก่อน)
+        """Update and return user."""
+        password = validated_data.pop('password', None) # pop password จาก validated data ซึ่ง จะทำให้ถูก remove ออกจาก dict หลังจากได้รับ value
+        # ใส่ None เพราะว่า เราไม่ได้บังคับให้ใส่ password ดังนั้น pass อาจจะไม่มี value ก็ได้ใน request เลยกำหนด default value ให้เป็น None
+        user = super().update(instance, validated_data) # เรียก method update จาก ModelSerializer (ทำการ update ทุก field ทุกอย่างยกเว้น password)
+
+        if password: # ถ้า password มี value
+            user.set_password(password) # update password แบบเข้ารหัสด้วยตรงนี้
+            user.save()
+
+        return user
+
+
     # เราจะสร้าง serializer สำหรับ token
 class AuthTokenSerializer(serializers.Serializer):
     """Serializer for the user auth token."""

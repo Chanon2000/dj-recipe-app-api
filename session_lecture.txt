@@ -82,3 +82,6 @@ What is a view?
 
 [84. Write tests for creating recipes]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[85. Implement create recipe API]
+'docker-compose run --rm app sh -c "python manage.py test"'

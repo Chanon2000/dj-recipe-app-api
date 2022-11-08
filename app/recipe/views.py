@@ -31,3 +31,10 @@ class RecipeViewSet(viewsets.ModelViewSet): # ModelViewSet คือ viewsets �
             # เราจะไม่เรียก constructor ของ RecipeSerializer ซึ่งก็คือการเขียน serializers.RecipeSerializer() เราแค่ return ref แบบนี้แล้ว drf จะจัดการต่อเอง
 
         return self.serializer_class
+
+    # เป็น method ใน viewsets
+    # override drf เมื่อ save model ที่ view
+    def perform_create(self, serializer):
+        """Create a new recipe."""
+        # เราทำการ override เมื่อมันสร้าง recipe ใหม่ขึ้นมา เราจะเรียก method นี้เป็นส่วนหนึ่ง objects creation และรับ 1 parameter คือ serializer (เราเดาได้เลยว่า data ถูก validated โดย serializer ของมันแล้วก่อนที่จะเรียก method นี้)
+        serializer.save(user=self.request.user) # และเมื่อ method นี้ถูกเรียกเราก็จะทำการ save โดยกำหนด user field เป็น user ที่ current authenticated

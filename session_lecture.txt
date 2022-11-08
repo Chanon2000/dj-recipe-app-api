@@ -110,3 +110,9 @@ It's always good to have robust testing
 แล้วคุณก็เริ่มทำการลองทดสอบ recipes ที่ api ได้
 
 PUT request จะ require full object
+
+[88. Summary]
+    - Implemented a model for storing recipes
+    - Created recipe API
+        # Create, Read, Update, Delete
+    - Tested API in browser

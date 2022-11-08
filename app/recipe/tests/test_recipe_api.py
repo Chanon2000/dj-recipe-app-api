@@ -42,6 +42,10 @@ def create_recipe(user, **params): # คือ helper function ในการ�
     # ถ้าใส่แค่ defaults มันจะมองเป็นแค่ใส่แค่ field parameters อันเดียว
     return recipe
 
+def create_user(**params): # สร้าง helper function นี้เพื่อให้สร้าง user ง่ายขึ้น
+    """Create and return a new user."""
+    return get_user_model().objects.create_user(**params)
+
 # แยก test เป็น unauthenticated กับ authenticated เหมือนเดิม
 
 class PublicRecipeAPITests(TestCase):
@@ -61,10 +65,11 @@ class PrivateRecipeApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
-            'user@example.com',
-            'testpass123',
-        )
+        self.user = create_user(email='user@example.com', password='test123') # เพื่อให้ code ดูดีขึ้น
+        # self.user = get_user_model().objects.create_user(
+        #     'user@example.com',
+        #     'testpass123',
+        # )
         self.client.force_authenticate(self.user)
 
     def test_retrieve_recipes(self):
@@ -86,10 +91,11 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipe_list_limited_to_user(self):
         """Test list of recipes is limited to authenticated user."""
-        other_user = get_user_model().objects.create_user(
-            'other@example.com',
-            'password123',
-        )
+        other_user = create_user(email='other@example.com', password='test123')
+        # other_user = get_user_model().objects.create_user(
+        #     'other@example.com',
+        #     'password123',
+        # )
         create_recipe(user=other_user) # สร้าง recipe ของ other_user var
         create_recipe(user=self.user) # สร้าง recipe ของ user ที่ auth
 
@@ -129,3 +135,87 @@ class PrivateRecipeApiTests(TestCase):
             self.assertEqual(getattr(recipe, k), v) # check ข้อมูลแค่ละ attributes
             # getattr() เอา value จาก key ที่ทำหนดใน recipe ที่ใส่มา return
         self.assertEqual(recipe.user, self.user) # check user field ใน recipe
+
+
+    def test_partial_update(self): # test การ update แค่ attr บางส่วนของ recipe``
+        """Test partial update of a recipe."""
+        original_link = 'https://example.com/recipe.pdf'
+        recipe = create_recipe(
+            user=self.user,
+            title='Sample recipe title',
+            link=original_link,
+        )
+
+        payload = {'title': 'New recipe title'}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload) # update เฉพาะ title ผ่าน api
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe.refresh_from_db() # เมื่อ update ต้อง refresh (เฉพาะตอน test นะ เพราะ default มันไม่ refresh ให้)
+        self.assertEqual(recipe.title, payload['title']) # check field ที่ update
+        self.assertEqual(recipe.link, original_link) # check field ที่ไม่ได้ update
+        self.assertEqual(recipe.user, self.user)
+
+
+    def test_full_update(self):
+        """Test full update of recipe."""
+        recipe = create_recipe(
+            user=self.user,
+            title='Sample recipe title',
+            link='https://exmaple.com/recipe.pdf',
+            description='Sample recipe description.',
+        )
+
+        payload = { # คือ value จะเข้าไปทำการ update recipe
+            'title': 'New recipe title',
+            'link': 'https://example.com/new-recipe.pdf',
+            'description': 'New recipe description',
+            'time_minutes': 10,
+            'price': Decimal('2.50'),
+        }
+        url = detail_url(recipe.id)
+        res = self.client.put(url, payload) # update ผ่าน api
+        # put = Full update object
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe.refresh_from_db()
+        for k, v in payload.items():
+            self.assertEqual(getattr(recipe, k), v) # check ทุก attributes
+        self.assertEqual(recipe.user, self.user)
+
+
+    def test_update_user_returns_error(self):
+        """Test changing the recipe user results in an error."""
+        new_user = create_user(email='user2@example.com', password='test123')
+        recipe = create_recipe(user=self.user)
+
+        payload = {'user': new_user.id}
+        url = detail_url(recipe.id)
+        self.client.patch(url, payload) # ตรงนี้จะต้อง error เพราะไม่ควรแก้ไข recipe ของคนอื่นได้
+        # ทำ check ตรงนี้เพื่อให้มั้นใจว่าเรา update user field ไม่ได้
+
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.user, self.user)
+
+
+    def test_delete_recipe(self):
+        """Test deleting a recipe successful."""
+        recipe = create_recipe(user=self.user)
+
+        url = detail_url(recipe.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT) # status เมื่อ delete success คือ 204
+        self.assertFalse(Recipe.objects.filter(id=recipe.id).exists()) # check ว่ามี recipe ที่ลบอยู่ใน database อยู่มั้ย
+
+
+    def test_delete_other_users_recipe_error(self):
+        """Test trying to delete another users recipe gives error.""" # ต้องลบ recipe ของคนอื่นไม่ได้ ( อีก security test)
+        new_user = create_user(email='user2@example.com', password='test123')
+        recipe = create_recipe(user=new_user)
+
+        url = detail_url(recipe.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND) # ต้อง 404 เพราะที่ api เรา filter เอาดเฉพาะ recipe ของ user ที่ authenticated เท่านั้นเอาไว้แล้ว
+        self.assertTrue(Recipe.objects.filter(id=recipe.id).exists())

@@ -85,3 +85,9 @@ What is a view?
 
 [85. Implement create recipe API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[86. Add additional tests]
+คนสอนชอบเขียน test เพราะว่ามันทำให้ quality ของ code หรือ software ดีขึ้น
+It's always good to have robust testing
+
+'docker-compose run --rm app sh -c "python manage.py test"'

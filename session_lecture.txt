@@ -91,3 +91,22 @@ What is a view?
 It's always good to have robust testing
 
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[87. Review recipe API in browser]
+
+ทำรัน application โดยมันจะทำการสร้าง docker container โดยเราได้เขียนใน docker-compose ว่าเมื่อรันให้ apply migration ด้วย
+'docker-compose up'
+
+ไปที่ http://127.0.0.1:8000/api/docs/#/ เราจะเห็น recipes api endpoint ทั้งหมด โดยที่เราไม่ต้องเขียน code เพิ่มเข้า docs เลย เพราะมัน auto add เข้า docs ให้
+
+โดยถ้าเราดูแต่ละ endpoint จะเห็นคำอธิบาย ซึ่งคำอธิบายนั้นมันเอามาจาก doc string ที่เราเขียนในแต่ละ view (class view)
+
+ทำการ authentication ที่ /api/user/token/
+    "email": "mick@example.com"
+    "password": "123456"
+
+แล้ว copy token มา โดยตอนใส่ต้องเติม "Token " ขึ้นต้นแล้วลงท้ายด้วย "cfb6f370f1c0fe1a430f45b2407ce65fbce57852" ที่ copy มา
+
+แล้วคุณก็เริ่มทำการลองทดสอบ recipes ที่ api ได้
+
+PUT request จะ require full object

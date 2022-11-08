@@ -109,3 +109,23 @@ class PrivateRecipeApiTests(TestCase):
 
         serializer = RecipeDetailSerializer(recipe)
         self.assertEqual(res.data, serializer.data) # check ว่า recipe ที่ได้จาก api กับ ที่ serializer ตรงนี้เลย เหมือนกันหรือป่าว (เพราะใน api ก็ทำ serializer เหมือนกัน)
+
+    def test_create_recipe(self): # เราไม่ต้องใช้ helper func create_recipe ในการ test นี้เพราะเป้าหมายในการ test นี้คือการสร้าง recipe ผ่าน api
+        """Test creating a recipe.""" # ทดสอบว่า recipe ที่ถูกสร้างผ่าน api นั้นถูกต้องหรือป่าว
+        payload = {
+            'title': 'Sample recipe',
+            'time_minutes': 30,
+            'price': Decimal('5.99'),
+        }
+        res = self.client.post(RECIPES_URL, payload) # /api/recipes/recipe
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        recipe = Recipe.objects.get(id=res.data['id'])
+        for k, v in payload.items(): # check ข้อมูลแต่ละ item
+            # k = key ใน dict
+                # recipe.k จะได้ value จะ key นั้นๆ
+            # v = value ใน dict
+            # items() เป็น method ของ dict
+            self.assertEqual(getattr(recipe, k), v) # check ข้อมูลแค่ละ attributes
+            # getattr() เอา value จาก key ที่ทำหนดใน recipe ที่ใส่มา return
+        self.assertEqual(recipe.user, self.user) # check user field ใน recipe

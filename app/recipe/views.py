@@ -38,6 +38,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 # เราจะต้องมี basic CRUD implementation
 class TagViewSet(mixins.ListModelMixin, # เป็น mixins เพื่อเพิ่ม listing functionality ให้กับการ listing models
+                 mixins.UpdateModelMixin,
                  viewsets.GenericViewSet): # viewsets.GenericViewSet ให้คุณสามารถใส่mixinsได้ (เหมือนกับ GenericViewSet มี basic func ต่างๆให้ จากนั้นเอา mixins มาเพิ่มความสามารถให้กับ basic function ต่างๆเหล่านั้น)
     """Manage tags in the database."""
     serializer_class = serializers.TagSerializer
@@ -45,6 +46,9 @@ class TagViewSet(mixins.ListModelMixin, # เป็น mixins เพื่อเ
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     # property พวกนี้ พิมพ์สะกดผิดทีนิหา bug ค่อนข้างยากเลย
+
+    # เพื่อให้ view นี้สามารถ update tag ได้ด้วย
+    # mixins ต่างๆต้องกำหนดก่อน GenericViewSet (ใน doc มันบอกเอาไว้)
 
     # override get_queryset method
     def get_queryset(self): # เพื่อให้ตอน get เอาเฉพาะ tags ของ user ที่ login เท่านั้น

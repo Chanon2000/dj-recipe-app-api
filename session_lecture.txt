@@ -16,3 +16,18 @@ Tag Endpoint
     - PUT/PATCH - Update tags
     - DELETE - Remove tag
     - GET - List available tags
+
+[90. Add tag model]
+'docker-compose run --rm app sh -c "python manage.py test"' => รันเพื่อดูว่ามัน fail ตามที่คาดหวังมั้ย เพื่อ check ว่ามันรัน test ใหม่คุณจริงๆ
+
+สร้าง Tag migrations
+'docker-compose run --rm app sh -c "python manage.py makemigrations"'
+
+เนื่องจาก test ก่อนหน้ามัน fail และมันไม่ได้ถอน database อันเก่าออก เลย แจ้งเตือน ว่า
+
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+Got an error creating the test database: database "test_devdb" already exists
+Type 'yes' if you would like to try deleting the test database 'test_devdb', or 'no' to cancel:
+=> yes ไป
+

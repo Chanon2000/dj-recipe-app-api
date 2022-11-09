@@ -53,6 +53,19 @@ class Recipe(models.Model):
     time_minutes = models.IntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
     link = models.CharField(max_length=255, blank=True)
+    tags = models.ManyToManyField('Tag') # เพราะ 1 recipe สามารถมีได้หลาย tag และ 1 tag ก็สามารถอยู่ได้หลาย recipe
 
     def __str__(self):
         return self.title
+
+
+class Tag(models.Model):
+    """Tag for filtering recipes."""
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, # ถ้า user ใน field นี้ถูกลบ tag ก็จะถูกลบด้วย
+    )
+
+    def __str__(self):
+        return self.name

@@ -44,3 +44,6 @@ Type 'yes' if you would like to try deleting the test database 'test_devdb', or 
 เพรียงแค่ใส่ mixins.UpdateModelMixin เข้าไป มันก็จะได้ 'tag-detail' ทั้นที
 เมื่อรัน test ก็จะผ่าน
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[96. Implement delete tag API]
+'docker-compose run --rm app sh -c "python manage.py test"'

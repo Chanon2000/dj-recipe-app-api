@@ -37,9 +37,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 # เราจะต้องมี basic CRUD implementation
-class TagViewSet(mixins.ListModelMixin, # เป็น mixins เพื่อเพิ่ม listing functionality ให้กับการ listing models
-                 mixins.UpdateModelMixin,
-                 viewsets.GenericViewSet): # viewsets.GenericViewSet ให้คุณสามารถใส่mixinsได้ (เหมือนกับ GenericViewSet มี basic func ต่างๆให้ จากนั้นเอา mixins มาเพิ่มความสามารถให้กับ basic function ต่างๆเหล่านั้น)
+class TagViewSet(mixins.DestroyModelMixin,
+                mixins.UpdateModelMixin,
+                mixins.ListModelMixin, # เป็น mixins เพื่อเพิ่ม listing functionality ให้กับการ listing models
+                viewsets.GenericViewSet): # viewsets.GenericViewSet ให้คุณสามารถใส่mixinsได้ (เหมือนกับ GenericViewSet มี basic func ต่างๆให้ จากนั้นเอา mixins มาเพิ่มความสามารถให้กับ basic function ต่างๆเหล่านั้น)
     """Manage tags in the database."""
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()

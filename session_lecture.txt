@@ -85,3 +85,6 @@ AssertionError: The `.update()` method does not support writable nested fields b
 
 [101. Implement update recipe tags feature]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[102. Review tags API in browser]
+'docker-compose up' => มันก็จะรัน app และรัน migrate ทุก migrations ถ้าคุณมีที่ยังไม่ได้ update

@@ -82,3 +82,6 @@ Limitations ในการใช้ Nested serializers
 AssertionError: The `.update()` method does not support writable nested fields by default.
 
 นั้นเป็นเพราะว่า nested serializer fields จะเป็น read_only
+
+[101. Implement update recipe tags feature]
+'docker-compose run --rm app sh -c "python manage.py test"'

@@ -10,7 +10,10 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Recipe
+from core.models import (
+    Recipe,
+    Tag,
+)
 
 from recipe.serializers import (
     RecipeSerializer,
@@ -193,3 +196,57 @@ class PrivateRecipeApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         self.assertTrue(Recipe.objects.filter(id=recipe.id).exists())
+
+
+    def test_create_recipe_with_new_tags(self):
+        """Test creating a recipe with new tags."""
+        # โดย create recipe ที่เราจะสร้างนี้ เราจะ support การสร้าง tag เมื่อ สร้าง recipe
+        # ถ้า tag ที่กรอกมามีอยู่แล้วก็จะไม่สร้างแต่ถ้ายังไม่มีก็จะสร้าง tag นั้นใหม่
+        payload = {
+            'title': 'Thai Prawn Curry',
+            'time_minutes': 30,
+            'price': Decimal('2.50'),
+            'tags': [{'name': 'Thai'}, {'name': 'Dinner'}],
+        }
+        res = self.client.post(RECIPES_URL, payload, format='json')
+        # ยิงไปที่ RECIPES_URL
+        # ส่ง payload เป็น value ไป
+        # เนื่องจากเราใส่ nested objects เราเลย set format='json' เพื่อให้แน่ใจว่ามันถูก convert เป็น json แล้ว post ไปที่ api success
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        recipes = Recipe.objects.filter(user=self.user)
+        self.assertEqual(recipes.count(), 1) # ต้องมีแค่ 1 recipe เท่านั้นที่ถูกสร้าง # เรา check ตรงนี้ก่อนจะเอา value recipes[0] ใส่ลง recipe เพื่อไม่ให้มันไป error ที่บรรทัดล่างนั้นแหละ (เพราะเราดึงมันโดย index)
+        recipe = recipes[0]
+        self.assertEqual(recipe.tags.count(), 2) # recipe ที่พึงสร้างนี้จะต้องมี 2 tag
+        for tag in payload['tags']: # check แต่ละ tag ใน recipe ว่า value ตรงกับที่พึงสร้างไปมั้ย
+            exists = recipe.tags.filter(
+                name=tag['name'],
+                user=self.user,
+            ).exists()
+            self.assertTrue(exists)
+
+
+    # test เมื่อ user สร้าง recipe โดยใช้ tags ที่มีอยู่แล้วใน database (เพื่อไม่ให้มัน recreate อีกครั้ง)
+    def test_create_recipe_with_existing_tags(self):
+        """Test creating a recipe with existing tag."""
+        tag_indian = Tag.objects.create(user=self.user, name='Indian')
+        payload = {
+            'title': 'Pongal',
+            'time_minutes': 60,
+            'price': Decimal('4.50'),
+            'tags': [{'name': 'Indian'}, {'name': 'Breakfast'}],
+        }
+        res = self.client.post(RECIPES_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        recipes = Recipe.objects.filter(user=self.user)
+        self.assertEqual(recipes.count(), 1)
+        recipe = recipes[0]
+        self.assertEqual(recipe.tags.count(), 2) # มันจะต้องมีแค่ 2 tag (checkกันสร้าง Indian ขึ้นมา 2 tags แล้วมันจะทำให้รวมกับ tags อื่นเป็น 3) (ตรงนี้ทำให้ check สร้าง tags ซำ้ได้)
+        self.assertIn(tag_indian, recipe.tags.all())
+        for tag in payload['tags']:
+            exists = recipe.tags.filter(
+                name=tag['name'],
+                user=self.user,
+            ).exists()
+            self.assertTrue(exists)

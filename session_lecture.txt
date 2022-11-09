@@ -68,3 +68,7 @@ Limitations ในการใช้ Nested serializers
     - มันจะเป็น read only นั้นก็คือใน nested serialized จะทำได้แค่อ่าน value
         # ไม่สามารถสร้าง object ใหม่ด้วย nested values
     - แต่สามารถ custom logic ให้สามารถเขียน field ที่เป็น Nested serializers ได้นะ
+
+
+[98. Write tests for creating tags]
+'docker-compose run --rm app sh -c "python manage.py test"'

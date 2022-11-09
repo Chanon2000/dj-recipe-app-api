@@ -31,3 +31,5 @@ Got an error creating the test database: database "test_devdb" already exists
 Type 'yes' if you would like to try deleting the test database 'test_devdb', or 'no' to cancel:
 => yes ไป
 
+[91. Write tests for listing tags]
+'docker-compose run --rm app sh -c "python manage.py test"'

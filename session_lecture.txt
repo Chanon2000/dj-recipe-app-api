@@ -47,3 +47,24 @@ Type 'yes' if you would like to try deleting the test database 'test_devdb', or 
 
 [96. Implement delete tag API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[97. Nested serializers]
+
+Nested serializers
+    - คือ serializers ที่อยู่ใน serializers อีกที
+        # โดย srz นั้นจะมี field ที่จะลิ้งไปหาอีก srz นั้นเอง
+    - ใช้กับ object ที่ซับซ้อนที่มีหลายๆ fields เช่น JSON response
+        {
+            "title": "Some title",
+            "user": "Jeff",
+            "tags": [
+                {"name": "Tag 1"},
+                {"name": "Tag 2"}
+            ]
+        }
+        # จะเห็นว่ามี tags ที่เก็บ nested object เป็น array ซึ่งตรงนี้แหละที่เราจะใช้ Nested serializer จัดการ
+
+Limitations ในการใช้ Nested serializers
+    - มันจะเป็น read only นั้นก็คือใน nested serialized จะทำได้แค่อ่าน value
+        # ไม่สามารถสร้าง object ใหม่ด้วย nested values
+    - แต่สามารถ custom logic ให้สามารถเขียน field ที่เป็น Nested serializers ได้นะ

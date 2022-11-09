@@ -40,7 +40,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class TagViewSet(mixins.DestroyModelMixin,
                 mixins.UpdateModelMixin,
                 mixins.ListModelMixin, # เป็น mixins เพื่อเพิ่ม listing functionality ให้กับการ listing models
-                viewsets.GenericViewSet): # viewsets.GenericViewSet ให้คุณสามารถใส่mixinsได้ (เหมือนกับ GenericViewSet มี basic func ต่างๆให้ จากนั้นเอา mixins มาเพิ่มความสามารถให้กับ basic function ต่างๆเหล่านั้น)
+                viewsets.GenericViewSet):
+                # GenericViewSet เป็น viewsets ที่จะไม่มี actions อะไรเลยโดย default เพื่อใช้งาน คุณจะต้องใส่ mixin ต่างๆตามที่คุณอยากใช้
+                # GenericViewSet docs:https://www.django-rest-framework.org/api-guide/viewsets/#genericviewset
     """Manage tags in the database."""
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()

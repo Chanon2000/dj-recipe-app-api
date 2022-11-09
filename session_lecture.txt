@@ -88,3 +88,8 @@ AssertionError: The `.update()` method does not support writable nested fields b
 
 [102. Review tags API in browser]
 'docker-compose up' => มันก็จะรัน app และรัน migrate ทุก migrations ถ้าคุณมีที่ยังไม่ได้ update
+
+[103. Summary]
+    - Implemented tag model
+    - Added tags API
+    - Updated recipe endpoint to use tags

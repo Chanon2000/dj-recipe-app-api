@@ -40,23 +40,21 @@ class PrivateTagsApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
-        self.user = create_user() # สร้าง user
-        self.client = APIClient() # สร้าง client
-        self.client.force_authenticate(self.user) # ทำการ authenticate user ที่สร้าง
+        self.user = create_user()
+        self.client = APIClient()
+        self.client.force_authenticate(self.user)
 
     def test_retrieve_tags(self):
         """Test retrieving a list of tags."""
-        # สร้าง 2 tag ที่จะใช้ในการทดสอบ
         Tag.objects.create(user=self.user, name='Vegan')
         Tag.objects.create(user=self.user, name='Dessert')
 
         res = self.client.get(TAGS_URL)
 
         tags = Tag.objects.all().order_by('-name')
-        # ต้อง order เพราะว่า แต่ละ database อาจ order item ไม่เหมือนกับ เราเลยมา order ตรงนี้เพื่อให้มันชัดเจน
-        serializer = TagSerializer(tags, many=True) # many=True เพื่อเราไม่ได้ใส่ tag แต่ object เดียว
+        serializer = TagSerializer(tags, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data) # check ว่า data ที่ได้จาก api กับ serializer ตรงกันมั้ย
+        self.assertEqual(res.data, serializer.data)
 
     def test_tags_limited_to_user(self):
         """Test list of tags is limited to authenticated user."""
@@ -67,7 +65,7 @@ class PrivateTagsApiTests(TestCase):
         res = self.client.get(TAGS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data), 1) # ต้องไม่ดึง tag ของคนอื่นมา
+        self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], tag.name)
         self.assertEqual(res.data[0]['id'], tag.id)
 
@@ -81,15 +79,15 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         tag.refresh_from_db()
-        self.assertEqual(tag.name, payload['name']) # ข้อมูลต้องเปลี่ยนตามที่ update
+        self.assertEqual(tag.name, payload['name'])
 
     def test_delete_tag(self):
         """Test deleting a tag."""
         tag = Tag.objects.create(user=self.user, name='Breakfast')
 
         url = detail_url(tag.id)
-        res = self.client.delete(url) # เรียก http delete ไปที่ url
+        res = self.client.delete(url)
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         tags = Tag.objects.filter(user=self.user)
-        self.assertFalse(tags.exists()) # ถ้า exists() return false แสดงว่า ไม่มี tags เลย
+        self.assertFalse(tags.exists())

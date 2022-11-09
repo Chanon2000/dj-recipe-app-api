@@ -1,9 +1,9 @@
 """
 Views for the recipe APIs
 """
-from rest_framework import ( # import หลายอันให้ใส่เป็น tuple
+from rest_framework import (
     viewsets,
-    mixins, # คือสิ่งที่สามารถใส่เข้าไปใน view เพื่อเพิ่ม functionality
+    mixins,
 )
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -36,24 +36,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Create a new recipe."""
         serializer.save(user=self.request.user)
 
-# เราจะต้องมี basic CRUD implementation
 class TagViewSet(mixins.DestroyModelMixin,
                 mixins.UpdateModelMixin,
-                mixins.ListModelMixin, # เป็น mixins เพื่อเพิ่ม listing functionality ให้กับการ listing models
+                mixins.ListModelMixin,
                 viewsets.GenericViewSet):
-                # GenericViewSet เป็น viewsets ที่จะไม่มี actions อะไรเลยโดย default เพื่อใช้งาน คุณจะต้องใส่ mixin ต่างๆตามที่คุณอยากใช้
-                # GenericViewSet docs:https://www.django-rest-framework.org/api-guide/viewsets/#genericviewset
     """Manage tags in the database."""
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    # property พวกนี้ พิมพ์สะกดผิดทีนิหา bug ค่อนข้างยากเลย
 
-    # เพื่อให้ view นี้สามารถ update tag ได้ด้วย
-    # mixins ต่างๆต้องกำหนดก่อน GenericViewSet (ใน doc มันบอกเอาไว้)
-
-    # override get_queryset method
-    def get_queryset(self): # เพื่อให้ตอน get เอาเฉพาะ tags ของ user ที่ login เท่านั้น
+    def get_queryset(self):
         """Filter queryset to authenticated user."""
         return self.queryset.filter(user=self.request.user).order_by('-name')

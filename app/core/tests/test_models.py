@@ -74,7 +74,7 @@ class ModelTests(TestCase):
 
     def test_create_tag(self):
         """Test creating a tag is successful."""
-        user = create_user() # สร้าง user แล้วเก็บลง user var
-        tag = models.Tag.objects.create(user=user, name='Tag1') # แล้วสร้าง tag
+        user = create_user()
+        tag = models.Tag.objects.create(user=user, name='Tag1')
 
-        self.assertEqual(str(tag), tag.name) # ทดสอบว่าเราสามารถสร้าง new tag ได้จริงๆ ผ่าน create
+        self.assertEqual(str(tag), tag.name)

@@ -200,8 +200,6 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_create_recipe_with_new_tags(self):
         """Test creating a recipe with new tags."""
-        # โดย create recipe ที่เราจะสร้างนี้ เราจะ support การสร้าง tag เมื่อ สร้าง recipe
-        # ถ้า tag ที่กรอกมามีอยู่แล้วก็จะไม่สร้างแต่ถ้ายังไม่มีก็จะสร้าง tag นั้นใหม่
         payload = {
             'title': 'Thai Prawn Curry',
             'time_minutes': 30,
@@ -209,16 +207,13 @@ class PrivateRecipeApiTests(TestCase):
             'tags': [{'name': 'Thai'}, {'name': 'Dinner'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
-        # ยิงไปที่ RECIPES_URL
-        # ส่ง payload เป็น value ไป
-        # เนื่องจากเราใส่ nested objects เราเลย set format='json' เพื่อให้แน่ใจว่ามันถูก convert เป็น json แล้ว post ไปที่ api success
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipes = Recipe.objects.filter(user=self.user)
-        self.assertEqual(recipes.count(), 1) # ต้องมีแค่ 1 recipe เท่านั้นที่ถูกสร้าง # เรา check ตรงนี้ก่อนจะเอา value recipes[0] ใส่ลง recipe เพื่อไม่ให้มันไป error ที่บรรทัดล่างนั้นแหละ (เพราะเราดึงมันโดย index)
+        self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
-        self.assertEqual(recipe.tags.count(), 2) # recipe ที่พึงสร้างนี้จะต้องมี 2 tag
-        for tag in payload['tags']: # check แต่ละ tag ใน recipe ว่า value ตรงกับที่พึงสร้างไปมั้ย
+        self.assertEqual(recipe.tags.count(), 2)
+        for tag in payload['tags']:
             exists = recipe.tags.filter(
                 name=tag['name'],
                 user=self.user,
@@ -226,7 +221,6 @@ class PrivateRecipeApiTests(TestCase):
             self.assertTrue(exists)
 
 
-    # test เมื่อ user สร้าง recipe โดยใช้ tags ที่มีอยู่แล้วใน database (เพื่อไม่ให้มัน recreate อีกครั้ง)
     def test_create_recipe_with_existing_tags(self):
         """Test creating a recipe with existing tag."""
         tag_indian = Tag.objects.create(user=self.user, name='Indian')
@@ -242,7 +236,7 @@ class PrivateRecipeApiTests(TestCase):
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
-        self.assertEqual(recipe.tags.count(), 2) # มันจะต้องมีแค่ 2 tag (checkกันสร้าง Indian ขึ้นมา 2 tags แล้วมันจะทำให้รวมกับ tags อื่นเป็น 3) (ตรงนี้ทำให้ check สร้าง tags ซำ้ได้)
+        self.assertEqual(recipe.tags.count(), 2)
         self.assertIn(tag_indian, recipe.tags.all())
         for tag in payload['tags']:
             exists = recipe.tags.filter(
@@ -259,31 +253,26 @@ class PrivateRecipeApiTests(TestCase):
         payload = {'tags': [{'name': 'Lunch'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
-        # เราส่งไปแค่ tags field
-        # เอา tags ใน payload ไปสร้าง (หรือถ้ามีอยู่แล้วก็ไม่ต้องสร้าง แต่ในกรณีนี้ทดสอบสร้าง tag) ที่ recipe.id ที่กำหนด แล้วใส่ relation ที่ recipe นั้น
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         new_tag = Tag.objects.get(user=self.user, name='Lunch')
-        self.assertIn(new_tag, recipe.tags.all()) # check ว่า Lunch ต้องถูกสร้างและ relate กับ recipe นี้
-        # สังเกต เราไม่ต้องทำการ refresh database เนื่องจากเรา update tags field เป็นเพราะว่า
-        # มันไม่ได้ถูก cached ตอน create recipe เนื่องจาก tags field เป็น relation field ที่ไม่ถูก cached เพราะว่า recipe.tags.all() มันคือ query ใหม่เลย มันไม่ได้มองเป็น query เก่าที่ได้จากตอน recipe = create_recipe(user=self.user)
-        # จากตรงนี้จะเห็นได้ว่าที่เราต้อง refresh database เพราะว่าตอน test มัน cached ข้อมูลให้เรา ทำให้เรายังได้ข้อมูลเก่าถ้าาเราไม่ refresh (cached เพื่อลด request ไปที่ test database มั้ง)
+        self.assertIn(new_tag, recipe.tags.all())
 
 
     def test_update_recipe_assign_tag(self):
         """Test assigning an existing tag when updating a recipe."""
         tag_breakfast = Tag.objects.create(user=self.user, name='Breakfast')
         recipe = create_recipe(user=self.user)
-        recipe.tags.add(tag_breakfast) # เพื่อให้ tag_breakfast มัน exist ใน recipe
+        recipe.tags.add(tag_breakfast)
 
         tag_lunch = Tag.objects.create(user=self.user, name='Lunch')
-        payload = {'tags': [{'name': 'Lunch'}]} # ทำ payload ที่จะเข้าไป update แค่ tags field ใน recipe
+        payload = {'tags': [{'name': 'Lunch'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn(tag_lunch, recipe.tags.all())
-        self.assertNotIn(tag_breakfast, recipe.tags.all()) # tag_breakfast ต้องไม่ rela กับ recipe แล้วเพราะว่าเรา patch เข้ามา เอา tag_lunch มาใส่แทน
+        self.assertNotIn(tag_breakfast, recipe.tags.all())
 
     def test_clear_recipe_tags(self):
         """Test clearing a recipes tags."""
@@ -291,8 +280,7 @@ class PrivateRecipeApiTests(TestCase):
         recipe = create_recipe(user=self.user)
         recipe.tags.add(tag)
 
-        # เหมือนส่ง [] เพื่อทำการ clearing tags ใน recipe
-        payload = {'tags': []} # ส่ง [] เพื่อเข้าไปแทนที่ tags ที่มีอยู่
+        payload = {'tags': []}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 

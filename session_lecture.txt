@@ -35,3 +35,6 @@ Type 'yes' if you would like to try deleting the test database 'test_devdb', or 
 'docker-compose run --rm app sh -c "python manage.py test"'
 [92. Implement tag listing API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+[93. Write tests for updating tags]
+'docker-compose run --rm app sh -c "python manage.py test"'
+มันจะ error ที่ 'tag-detail' เพราะมันไม่รู้จัก endpoint นี้

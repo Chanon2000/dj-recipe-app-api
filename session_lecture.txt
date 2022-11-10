@@ -57,3 +57,19 @@ Ingredients Endpoint
 
 [115. Implement update recipe ingredients feature]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[116. Refactoring]
+
+What is refactoring?
+    - Restructure code โดยเป้าหมายคือ
+        - Easier to read
+        - More efficient
+        - Less duplication
+    - Improve performance
+    - Does the same thing (คือ code ทั้งทำงานได้เหมือนเดิม)
+
+TDD Refactoring
+    - TDD makes refactoring easy (เนื่องจากเราเขียน test ก่อนที่เราจะ implement code มันทำให้เราไม่ต้องกังวลว่าการ refactor จะทำให้ code มีปัญหา เพราะเราทดสอบได้จาก test ตัวเดิม)
+    - Run tests to ensure code still works
+
+จาก code ที่เขียนมา เราจะเห็นว่า TagViewSet กับ IngredientViewSet นั้น มี code ที่เหมือนกันมาก สิ่งที่เราจะทำต่อไปก็คือ refactor code ให้ทำการ inheritance เพื่อลดความซำ้ซ้อน และทำให้ code อ่านง่ายขึ้น

@@ -6,7 +6,17 @@ from rest_framework import serializers
 from core.models import (
     Recipe,
     Tag,
+    Ingredient,
 )
+
+class IngredientSerializer(serializers.ModelSerializer):
+    """Serializer for ingredients."""
+
+    class Meta:
+        model = Ingredient # กำหนด model (เนื่องจากเราใช้ ModelSerializer )
+        fields = ['id', 'name']
+        read_only_fields = ['id'] # กำหนด field ที่เป็น พำ read only
+
 
 class TagSerializer(serializers.ModelSerializer):
     """Serializer for tags."""

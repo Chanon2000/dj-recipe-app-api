@@ -13,6 +13,7 @@ from recipe import views
 router = DefaultRouter()
 router.register('recipes', views.RecipeViewSet)
 router.register('tags', views.TagViewSet)
+router.register('ingredients', views.IngredientViewSet) # register Ingredient view เพื่อสร้าง url ที่จะยิงเข้าหามัน
 
 app_name = 'recipe'
 

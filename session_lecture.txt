@@ -27,3 +27,5 @@ Ingredients Endpoint
 
 [106. Write tests for listing ingredients]
 'docker-compose run --rm app sh -c "python manage.py test"' => ต้อง fail ตามเคยเพราะเราเขียน test ก่อน implement
+[107. Implement ingredient listing API]
+'docker-compose run --rm app sh -c "python manage.py test"' => ต้องผ่าน เพราะเรา implement แล้ว

@@ -37,13 +37,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Create a new recipe."""
         serializer.save(user=self.request.user)
 
-class TagViewSet(mixins.DestroyModelMixin,
-                mixins.UpdateModelMixin,
-                mixins.ListModelMixin,
-                viewsets.GenericViewSet):
-    """Manage tags in the database."""
-    serializer_class = serializers.TagSerializer
-    queryset = Tag.objects.all()
+# Refactor ให้TagViewSet กับ IngredientViewSet มัน base BaseRecipeAttrViewSet เพราะ login ทั้ง 2 อันมันซำ้
+# Base เพราะว่าเราจะใช้ class นี้เป็น base class มันจะไม่ใช้ view ที่เราจะใช้ตรงๆ
+# RecipeAttr เพราะทั้ง Tag และ Ingredient ก็เป็นเหมือน attributes ของ Recipe
+# ViewSet ก็เพราะมัน base มาจาก viewsets อีกที ซึ่งในที่นี้เราใช้ GenericViewSet
+class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.ListModelMixin,
+                            viewsets.GenericViewSet):
+    """Base viewset for recipe attributes."""
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -51,16 +53,25 @@ class TagViewSet(mixins.DestroyModelMixin,
         """Filter queryset to authenticated user."""
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
-class IngredientViewSet(mixins.DestroyModelMixin, # เพื่อได้ delete action เข้า view นี้
-                        mixins.UpdateModelMixin, # แค่นี้คุณก็ได้ update ingredient action แล้ว
-                        mixins.ListModelMixin,
-                        viewsets.GenericViewSet):
+
+class TagViewSet(BaseRecipeAttrViewSet):
+    """Manage tags in the database."""
+    serializer_class = serializers.TagSerializer
+    queryset = Tag.objects.all()
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    # def get_queryset(self):
+    #     """Filter queryset to authenticated user."""
+    #     return self.queryset.filter(user=self.request.user).order_by('-name')
+
+class IngredientViewSet(BaseRecipeAttrViewSet):
     """Manage ingredients in the database."""
     serializer_class = serializers.IngredientSerializer # กำหนด Serializer class
     queryset = Ingredient.objects.all()
-    authentication_classes = [TokenAuthentication] # ใช้ TokenAuthentication ในการ authentication
-    permission_classes = [IsAuthenticated] # user ต้อง authenticated เพื่อใช้ endpoint นี้
+    # authentication_classes = [TokenAuthentication] # ใช้ TokenAuthentication ในการ authentication
+    # permission_classes = [IsAuthenticated] # user ต้อง authenticated เพื่อใช้ endpoint นี้
 
-    def get_queryset(self):
-        """Filter queryset to authenticated user."""
-        return self.queryset.filter(user=self.request.user).order_by('-name')
+    # def get_queryset(self):
+    #     """Filter queryset to authenticated user."""
+    #     return self.queryset.filter(user=self.request.user).order_by('-name')

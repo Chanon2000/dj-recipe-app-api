@@ -73,3 +73,6 @@ TDD Refactoring
     - Run tests to ensure code still works
 
 จาก code ที่เขียนมา เราจะเห็นว่า TagViewSet กับ IngredientViewSet นั้น มี code ที่เหมือนกันมาก สิ่งที่เราจะทำต่อไปก็คือ refactor code ให้ทำการ inheritance เพื่อลดความซำ้ซ้อน และทำให้ code อ่านง่ายขึ้น
+
+[117. Refactor recipe views]
+'docker-compose run --rm app sh -c "python manage.py test"'

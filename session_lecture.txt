@@ -44,6 +44,10 @@ Ingredients Endpoint
 
 [112. Write tests for creating ingredients]
 
-เนื่องจากเราจะสร้าง ingredients ผ่าน recipe API ไม่ใช่ผ่าน ingredient ตรงๆ เลยไปเขียน test_recipe_api
+เนื่องจากเราจะสร้าง ingredients ผ่าน recipe API ไม่ใช่ผ่าน ingredient ตรงๆ เลยไปเขียนใน test_recipe_api
 
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+[113. Implement create ingredients feature]
+หลังจาก implement ลอง test
 'docker-compose run --rm app sh -c "python manage.py test"'

@@ -54,3 +54,6 @@ Ingredients Endpoint
 
 [114. Write tests for updating recipe ingredients]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[115. Implement update recipe ingredients feature]
+'docker-compose run --rm app sh -c "python manage.py test"'

@@ -24,3 +24,6 @@ Ingredients Endpoint
 
 เพื่อรัน test อีกครั้งว่ามีพิมพ์ผิดมั้ยเป็นต้น มันจะได้แจ้ง error ตรงนี้เลย
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[106. Write tests for listing ingredients]
+'docker-compose run --rm app sh -c "python manage.py test"' => ต้อง fail ตามเคยเพราะเราเขียน test ก่อน implement

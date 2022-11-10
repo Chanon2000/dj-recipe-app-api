@@ -35,3 +35,6 @@ Ingredients Endpoint
 
 [109. Implement update ingredient API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[110. Write tests for deleting ingredients]
+'docker-compose run --rm app sh -c "python manage.py test"'

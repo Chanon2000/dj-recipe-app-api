@@ -85,3 +85,10 @@ TDD Refactoring
 'docker compose up'
 
 จากนั้นก็ทำการทดสอบที่ swagger ได้
+
+[119. Summary]
+    - Added ingredients model
+    - Implemented ingredients API
+    - Updated recipe API
+    - Refactored code
+    - Tested in browser

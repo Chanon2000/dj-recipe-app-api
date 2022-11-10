@@ -51,7 +51,8 @@ class TagViewSet(mixins.DestroyModelMixin,
         """Filter queryset to authenticated user."""
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
-class IngredientViewSet(mixins.UpdateModelMixin, # แค่นี้คุณก็ได้ update ingredient action แล้ว
+class IngredientViewSet(mixins.DestroyModelMixin, # เพื่อได้ delete action เข้า view นี้
+                        mixins.UpdateModelMixin, # แค่นี้คุณก็ได้ update ingredient action แล้ว
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     """Manage ingredients in the database."""

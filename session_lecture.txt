@@ -1,0 +1,17 @@
+[104. Ingredients API Design]
+
+Ingredients Model
+    - name : Name of ingredient to create
+    - user : User who owns ingredient
+
+Ingredients Endpoint
+    - /api/recipe/ingredients/
+        # GET- List ingredients
+    - /api/recipe/ingredients/<id>/
+        # GET - Get ingredient details
+        # PUT/PATCH - Update ingredient
+        # DELETE - Remove ingredient
+    - /api/recipe/
+        # POST - Create ingredients (as part of recipe)
+    - /api/recipe/<id>/
+        # PUT/PATCH - Create or modify ingredients

@@ -41,3 +41,9 @@ Ingredients Endpoint
 
 [111. Implement delete ingredient API]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[112. Write tests for creating ingredients]
+
+เนื่องจากเราจะสร้าง ingredients ผ่าน recipe API ไม่ใช่ผ่าน ingredient ตรงๆ เลยไปเขียน test_recipe_api
+
+'docker-compose run --rm app sh -c "python manage.py test"'

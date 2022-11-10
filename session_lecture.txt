@@ -76,3 +76,12 @@ TDD Refactoring
 
 [117. Refactor recipe views]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[118. Review ingredient API in browser]
+
+เพื่อให้มั้นใจว่า service ที่รันก่อนหน้า short down
+'docker-compose down'
+
+'docker compose up'
+
+จากนั้นก็ทำการทดสอบที่ swagger ได้

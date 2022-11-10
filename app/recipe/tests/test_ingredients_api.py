@@ -12,7 +12,7 @@ from core.models import Ingredient
 
 from recipe.serializers import IngredientSerializer
 
-# กำหนด ingredient url
+
 INGREDIENTS_URL = reverse('recipe:ingredient-list')
 
 
@@ -26,7 +26,6 @@ def create_user(email='user@example.com', password='testpass123'):
     return get_user_model().objects.create_user(email=email, password=password)
 
 
-# เพื่อ test ที่ไม่ต้อง authenticated
 class PublicIngredientsApiTests(TestCase):
     """Test unauthenticated API requests."""
 
@@ -56,12 +55,12 @@ class PrivateIngredientsApiTests(TestCase):
         res = self.client.get(INGREDIENTS_URL)
 
         ingredients = Ingredient.objects.all().order_by('-name')
-        serializer = IngredientSerializer(ingredients, many=True) # many=True เพื่อบอกว่าเราจะ Serializer หลายๆ item
+        serializer = IngredientSerializer(ingredients, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data) # check ว่าได้ข้อมูลถูกต้องหรือป่าว
+        self.assertEqual(res.data, serializer.data)
 
     def test_ingredients_limited_to_user(self):
-        """Test list of ingredients is limited to authenticated user.""" # list เฉพาะ ingredients ของ user ที่ authenticate เท่านั้น
+        """Test list of ingredients is limited to authenticated user."""
         user2 = create_user(email='user2@example.com')
         Ingredient.objects.create(user=user2, name='Salt')
         ingredient = Ingredient.objects.create(user=self.user, name='Pepper')
@@ -69,7 +68,6 @@ class PrivateIngredientsApiTests(TestCase):
         res = self.client.get(INGREDIENTS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        # ต้องได้แค่ Pepper ingredient เพราะเป็นของ authenticated user
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], ingredient.name)
         self.assertEqual(res.data[0]['id'], ingredient.id)
@@ -79,11 +77,11 @@ class PrivateIngredientsApiTests(TestCase):
         ingredient = Ingredient.objects.create(user=self.user, name='Cilantro')
 
         payload = {'name': 'Coriander'}
-        url = detail_url(ingredient.id) # สร้าง url
+        url = detail_url(ingredient.id)
         res = self.client.patch(url, payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        ingredient.refresh_from_db() # ต้อง refresh เนื่องจากไม่ใช่การ update relation field จึงควร refresh cache ออกก่อน
+        ingredient.refresh_from_db()
         self.assertEqual(ingredient.name, payload['name'])
 
     def test_delete_ingredient(self):
@@ -95,4 +93,4 @@ class PrivateIngredientsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         ingredients = Ingredient.objects.filter(user=self.user)
-        self.assertFalse(ingredients.exists()) # ingredients ต้องไม่มีเลย เพราะ user คนนี้มี ingredient อันเดียวคือ Lettuce ซึ่งคุณทำการลบมันไปแล้ว
+        self.assertFalse(ingredients.exists())

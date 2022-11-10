@@ -13,9 +13,9 @@ class IngredientSerializer(serializers.ModelSerializer):
     """Serializer for ingredients."""
 
     class Meta:
-        model = Ingredient # กำหนด model (เนื่องจากเราใช้ ModelSerializer )
+        model = Ingredient
         fields = ['id', 'name']
-        read_only_fields = ['id'] # กำหนด field ที่เป็น พำ read only
+        read_only_fields = ['id']
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -35,7 +35,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = [
             'id', 'title', 'time_minutes', 'price', 'link', 'tags',
-            'ingredients', # เอา 'ingredients' element มาไว้บรรทัดที่ 2 ตามที่ Flake-8 ต้องการ
+            'ingredients',
         ]
         read_only_fields = ['id']
 
@@ -49,9 +49,8 @@ class RecipeSerializer(serializers.ModelSerializer):
             )
             recipe.tags.add(tag_obj)
 
-    def _get_or_create_ingredients(self, ingredients, recipe): # เป็น internal method เลยใส่ _ นำหน้า หมายความว่า เราไม่คาดหวังให้ใครที่ใช้ sterilizer นี้ มาเรียก method นี้ตรงๆ (จะเอาไว้ใช้ใน sterilizer นี้เท่านั้น มันจะถูกใช้เฉพาะ methods ที่อยู่ใน recipe sterilizer class นี้เท่านั้น)
-        # เป็นแค่หลักการนะ ไม่ใช่ technical คือไม่ควรเรียก method ที่ _ นำหน้า นอก class ของมัน เป็น tip เมื่อเขียน python
-        """Handle getting or creating ingredients as needed.""" # ทำเหมือน _get_or_create_tags แค่เปลี่ยนเป็น ingredients
+    def _get_or_create_ingredients(self, ingredients, recipe):
+        """Handle getting or creating ingredients as needed."""
         auth_user = self.context['request'].user
         for ingredient in ingredients:
             ingredient_obj, created = Ingredient.objects.get_or_create(
@@ -64,7 +63,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Create a recipe."""
         tags = validated_data.pop('tags', [])
-        # เพิ่มจัดการ ingredients
         ingredients = validated_data.pop('ingredients', [])
         recipe = Recipe.objects.create(**validated_data)
         self._get_or_create_tags(tags, recipe)

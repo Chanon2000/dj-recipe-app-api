@@ -289,12 +289,12 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(recipe.tags.count(), 0)
 
     def test_create_recipe_with_new_ingredients(self):
-        """Test creating a recipe with new ingredients.""" # test เมื่อมีแต่ new ingredients
+        """Test creating a recipe with new ingredients."""
         payload = {
             'title': 'Cauliflower Tacos',
             'time_minutes': 60,
             'price': Decimal('4.30'),
-            'ingredients': [{'name': 'Cauliflower'}, {'name': 'Salt'}], # เป็น ingredients ใหม่ทั้งหมด
+            'ingredients': [{'name': 'Cauliflower'}, {'name': 'Salt'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -312,12 +312,12 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_create_recipe_with_existing_ingredient(self):
         """Test creating a new recipe with existing ingredient."""
-        ingredient = Ingredient.objects.create(user=self.user, name='Lemon') # สร้าง Lemon เอาไว้ก่อน
-        payload = { # recipe ที่จะสร้างใหม่
+        ingredient = Ingredient.objects.create(user=self.user, name='Lemon')
+        payload = {
             'title': 'Vietnamese Soup',
             'time_minutes': 25,
             'price': '2.55',
-            'ingredients': [{'name': 'Lemon'}, {'name': 'Fish Sauce'}], # มี existing ingredient คือ Lemon
+            'ingredients': [{'name': 'Lemon'}, {'name': 'Fish Sauce'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -325,8 +325,7 @@ class PrivateRecipeApiTests(TestCase):
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
-        self.assertEqual(recipe.ingredients.count(), 2) # ที่ relation กับ recipe นี้ต้องมีแค่ 2
-        # ถ้า fail ตรงนี้จะเป็น 3 เพราะ Lemon duplicate
+        self.assertEqual(recipe.ingredients.count(), 2)
         self.assertIn(ingredient, recipe.ingredients.all())
         for ingredient in payload['ingredients']:
             exists = recipe.ingredients.filter(
@@ -351,16 +350,16 @@ class PrivateRecipeApiTests(TestCase):
         """Test assigning an existing ingredient when updating a recipe."""
         ingredient1 = Ingredient.objects.create(user=self.user, name='Pepper')
         recipe = create_recipe(user=self.user)
-        recipe.ingredients.add(ingredient1) # ให้ recipe relate กับ ingredient1
+        recipe.ingredients.add(ingredient1)
 
         ingredient2 = Ingredient.objects.create(user=self.user, name='Chili')
         payload = {'ingredients': [{'name': 'Chili'}]}
         url = detail_url(recipe.id)
-        res = self.client.patch(url, payload, format='json') # มันจะ clear อันเก่าและเอาอันใหม่ ingredients ใน payload ที่จะ update ใส่เข้าไป
+        res = self.client.patch(url, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn(ingredient2, recipe.ingredients.all())
-        self.assertNotIn(ingredient1, recipe.ingredients.all()) # เพราะ ถูก patch โดยเอา ingredient2 มาแทน
+        self.assertNotIn(ingredient1, recipe.ingredients.all())
 
 
     def test_clear_recipe_ingredients(self):
@@ -369,7 +368,7 @@ class PrivateRecipeApiTests(TestCase):
         recipe = create_recipe(user=self.user)
         recipe.ingredients.add(ingredient)
 
-        payload = {'ingredients': []} # [] เพื่อ clear ingredients
+        payload = {'ingredients': []}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 

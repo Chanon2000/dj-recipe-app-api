@@ -15,3 +15,12 @@ Ingredients Endpoint
         # POST - Create ingredients (as part of recipe)
     - /api/recipe/<id>/
         # PUT/PATCH - Create or modify ingredients
+
+[105. Add ingredient model]
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+ทำการสนร้าง migrations เพื่อที่จะได้เอาไว้ apply ไปที่ database และ apply ที่ test ด้วย
+'docker-compose run --rm app sh -c "python manage.py makemigrations"'
+
+เพื่อรัน test อีกครั้งว่ามีพิมพ์ผิดมั้ยเป็นต้น มันจะได้แจ้ง error ตรงนี้เลย
+'docker-compose run --rm app sh -c "python manage.py test"'

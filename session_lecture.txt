@@ -1,0 +1,15 @@
+[120. Recipe image API design]
+
+In this section
+    - Handling static/media files
+    - Adding image dependencies
+    - Update recipe model with image field
+    - Add image upload endpoint
+
+Image API Design
+    -/api/recipes/<id>/upload-image/ => คือ endpoint ในการ upload image โดยจะแนบอยู่ใน recipes endpoint (โดย id จะเป็น id ของ recipe)
+        # POST - Upload iamge
+
+เราต้องเพิ่ม dependencies ให้กับ docker image เพื่อที่จะได้สามารถจัดการ images ได้
+นั้นคือ Pillow (Python Imaging Library จะมี Image field ให้เราใช้ใน django ได้)
+    - zlib, zlib-dev, jpeg-dev ต้องมีพวกนี้ install ลงเครื่องเพื่อใช้ Pillow

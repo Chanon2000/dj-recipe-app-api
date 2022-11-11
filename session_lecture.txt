@@ -13,3 +13,8 @@ Image API Design
 เราต้องเพิ่ม dependencies ให้กับ docker image เพื่อที่จะได้สามารถจัดการ images ได้
 นั้นคือ Pillow (Python Imaging Library จะมี Image field ให้เราใช้ใน django ได้)
     - zlib, zlib-dev, jpeg-dev ต้องมีพวกนี้ install ลงเครื่องเพื่อใช้ Pillow
+
+[121. Add image handling dependencies]
+
+เมื่อปรับ requirements file และ Dockerfile ก็ทำการ rebuild โดย
+'docker-compose build'

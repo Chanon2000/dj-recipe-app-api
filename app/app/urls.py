@@ -20,6 +20,8 @@ from drf_spectacular.views import (
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,3 +34,10 @@ urlpatterns = [
     path('api/user/', include('user.urls')),
     path('api/recipe/', include('recipe.urls')),
 ]
+
+# เพราะเมื่ออยู่ใน production เราไม่ต้องการให้ serve media files จาก development server
+if settings.DEBUG: # ถ้าอยู่ใน DEBUG mode
+    urlpatterns += static( # บอกให้ django serve files ที่ MEDIA_ROOT (เพราะโดย default Django development server ไม่ได้ serve file พวกนี้) เราเลยต้อง add เรื่องนี้เข้า urlpatterns เพื่อให้มันทำการ serve
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT,
+    )

@@ -51,3 +51,12 @@ Collect Static
     - Puts all static files into STATIC_ROOT
 
 docs: https://docs.djangoproject.com/en/3.2/howto/static-files/ เพิ่มเติม
+
+
+[123. Configure project for static files]
+
+เมื่อแก้ไข docker file และ docker-compose เสร็จ ก็ rebuild image
+'docker-compose build'
+มันก็จะทำการ rebuild image และเพิ่ม directories ใน Docker image ให้เรา
+
+และที่เราเพิ่มใน docker-compose ก็คือทำการสร้าง volumes และ map volumes กับ local dir

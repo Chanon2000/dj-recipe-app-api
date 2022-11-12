@@ -142,3 +142,7 @@ AUTH_USER_MODEL = 'core.User'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+SPECTACULAR_SETTINGS = {
+    'COMPONENT_SPLIT_REQUEST': True, # ทำการ enable image upload บน browser interface (ทำให้เราสามารถ upload image บน browser interface ได้ (swagger))
+}

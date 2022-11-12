@@ -75,3 +75,9 @@ ModuleNotFoundError: No module named 'core.models.uuid'; 'core.models' is not a 
 
 [125. Write tests for uploading images]
 'docker-compose run --rm app sh -c "python manage.py test"' => ต้อง fail เพราะยังไม่ได้ implement
+NamedTemporaryFile docs: https://docs.python.org/3/library/tempfile.html#tempfile.NamedTemporaryFile
+[126. Implement image API]
+
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+imagefield docs: https://drf-spectacular.readthedocs.io/en/latest/faq.html#filefield-imagefield-is-not-handled-properly-in-the-schema

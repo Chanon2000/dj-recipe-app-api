@@ -24,3 +24,6 @@ OpenAPI Schema
         เช่น Custom query params (filtering)
     - ใช้ DRF Spectacular extend_schema_view decorator
         จาก DRF Spectacular Library ซึ่งทำให้เราสามารถเพิ่ม decorator เข้า view เพื่อ customizations documentation
+
+[130. Add tests for filtering recipes]
+'docker-compose run --rm app sh -c "python manage.py test"'

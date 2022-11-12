@@ -41,3 +41,8 @@ OpenAPI Schema
 
 [134. Review filtering in browser]
 'docker-compose up'
+
+[135. Summary]
+    - Added filtering recipes by tags/ingredients
+    - Add filtering tags/ingredients by those assigned to recipes
+    - Customised OpenAPI Schema

@@ -116,7 +116,7 @@ class PrivateTagsApiTests(TestCase):
         self.assertIn(s1.data, res.data)
         self.assertNotIn(s2.data, res.data)
 
-    def test_filtered_tags_unique(self): # filter แล้วต้องไม่มี duplicate value
+    def test_filtered_tags_unique(self):
         """Test filtered tags returns a unique list."""
         tag = Tag.objects.create(user=self.user, name='Breakfast')
         Tag.objects.create(user=self.user, name='Dinner')

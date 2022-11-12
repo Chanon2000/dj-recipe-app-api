@@ -144,5 +144,5 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'COMPONENT_SPLIT_REQUEST': True, # ทำการ enable image upload บน browser interface (ทำให้เราสามารถ upload image บน browser interface ได้ (swagger))
+    'COMPONENT_SPLIT_REQUEST': True,
 }

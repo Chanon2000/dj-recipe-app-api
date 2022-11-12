@@ -24,14 +24,13 @@ from core.models import (
 )
 from recipe import serializers
 
-
-@extend_schema_view( # คือ decorator ที่ทำให้คุณ extend auto generated schema ที่สร้างโดย drf-spectacular
-    list=extend_schema( # กำหนด list = extend_schema ก็เพราะเราจะ extend schema นั้นแหละ โดย extend ให้กับ endpoint ที่เป็น list
-        parameters=[ # กำหนด parameters ที่สามารถใส่เข้าไปได้ ใน list api
-            OpenApiParameter( # เราใช้ OpenApiParameter ซึ่งมาจาก drf-spectacular เพื่อกำหนด detail ต่างๆ เกี่ยวกับ parameter ที่สามารถ accepted ใน API request
-                'tags', # name ของ parameter
-                OpenApiTypes.STR, # typr ของ value ซึ่ง STR นั้นก็คือ string (ไม่ int เพราะว่าเราจะให้มันสามารถใส่ , ได้ไง)
-                description='Comma separated list of tag IDs to filter', # เป็นคำอธิบาย บน docs
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'tags',
+                OpenApiTypes.STR,
+                description='Comma separated list of tag IDs to filter',
             ),
             OpenApiParameter(
                 'ingredients',
@@ -48,30 +47,25 @@ class RecipeViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    # เริ่มจากเขียน func ที่สามารถดึง list of parameters มาใช้ filter
-    # accepting our filter arguments as a list of IDs แล้วเปลี่ยนเป็น int
     def _params_to_ints(self, qs):
         """Convert a list of strings to integers."""
         return [int(str_id) for str_id in qs.split(',')]
-        # เช่น "1,2,3" เก็บใน qs แล้ว split โดย , เป็น str_id แล้วก็เอามา convert เป็น int โดย int()
 
     def get_queryset(self):
         """Retrieve recipes for authenticated user."""
-        # return self.queryset.filter(user=self.request.user).order_by('-id')
-        tags = self.request.query_params.get('tags') # ดึง tags params มา
+        tags = self.request.query_params.get('tags')
         ingredients = self.request.query_params.get('ingredients')
         queryset = self.queryset
-        if tags: # ถ้ามันไม่ได้ใส่ tag อะไรมา ก็ไม่ต้อง filter มัน (ซึ่งทำให้มันเป็ย optional คือจะใส่ param หรือ ไม่ใส่ก็ได้)
+        if tags:
             tag_ids = self._params_to_ints(tags)
             queryset = queryset.filter(tags__id__in=tag_ids)
-            # filter tags field by id ถ้า tag_ids อยู่ใน list ของ recipe อันไหน มันก็จะเป็น true
         if ingredients:
             ingredient_ids = self._params_to_ints(ingredients)
             queryset = queryset.filter(ingredients__id__in=ingredient_ids)
 
         return queryset.filter(
             user=self.request.user
-        ).order_by('-id').distinct() # distinct เพราะเราอาจจะได้ duplicate recipe ได้ การใส่ distinct ก็จะไม่ทำให้ result ไม่ duplicate
+        ).order_by('-id').distinct()
 
     def get_serializer_class(self):
         """Return the serializer class for request."""
@@ -98,13 +92,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# เพิ่ม docs ที่จะ extend หน้าบน class view เลย เพื่อจัดการ API documentation
 @extend_schema_view(
     list=extend_schema(
         parameters=[
             OpenApiParameter(
                 'assigned_only',
-                OpenApiTypes.INT, enum=[0, 1], # enum=[0, 1] เพื่อให้มีแค่ 0,1 ที่ใส่เข้ามาได้
+                OpenApiTypes.INT, enum=[0, 1],
                 description='Filter by items assigned to recipes.',
             ),
         ]
@@ -120,10 +113,8 @@ class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
 
     def get_queryset(self):
         """Filter queryset to authenticated user."""
-        # return self.queryset.filter(user=self.request.user).order_by('-name')
-        # ทำที่ baseRecipe เลยเพื่อที่จะได้ทั้ง tags และ ingredients
-        assigned_only = bool( # bool() จะ convert value ด้านใน 0,1 ให้เป็น False, True
-            int(self.request.query_params.get('assigned_only', 0)) # คือกำหนด default value เป็น 0 เมื่อไม่มี assigned_only params เข้ามา
+        assigned_only = bool(
+            int(self.request.query_params.get('assigned_only', 0))
         )
         queryset = self.queryset
         if assigned_only:

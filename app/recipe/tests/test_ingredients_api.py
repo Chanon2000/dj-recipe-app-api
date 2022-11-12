@@ -112,12 +112,12 @@ class PrivateIngredientsApiTests(TestCase):
         )
         recipe.ingredients.add(in1)
 
-        res = self.client.get(INGREDIENTS_URL, {'assigned_only': 1}) # filtrer เอาเฉพาะ ingredients ที่ถูก assigned ให้กับ recipe แล้วเท่านั้น
+        res = self.client.get(INGREDIENTS_URL, {'assigned_only': 1})
 
         s1 = IngredientSerializer(in1)
         s2 = IngredientSerializer(in2)
         self.assertIn(s1.data, res.data)
-        self.assertNotIn(s2.data, res.data) # จะต้องไม่ได้in2 เพราะมันไม่ได้ถูก assigned ให้กับ recipes อันไหนเลย
+        self.assertNotIn(s2.data, res.data)
 
     def test_filtered_ingredients_unique(self):
         """Test filtered ingredients returns a unique list."""
@@ -140,4 +140,4 @@ class PrivateIngredientsApiTests(TestCase):
 
         res = self.client.get(INGREDIENTS_URL, {'assigned_only': 1})
 
-        self.assertEqual(len(res.data), 1) # ต้องไม่ list เป็น duplicate value มา
+        self.assertEqual(len(res.data), 1)

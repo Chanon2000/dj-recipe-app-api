@@ -2,6 +2,10 @@
 Tests for recipe APIs.
 """
 from decimal import Decimal
+import tempfile
+import os
+
+from PIL import Image # PIL ก็คือ Pillow image library
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -27,6 +31,10 @@ def detail_url(recipe_id):
     """Create and return a recipe detail URL."""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
+# helper function ที่ทำให้เรา generate url ไปที่ upload image endpoint
+def image_upload_url(recipe_id):
+    """Create and return an image upload URL."""
+    return reverse('recipe:recipe-upload-image', args=[recipe_id])
 
 def create_recipe(user, **params):
     """Create and return a sample recipe."""
@@ -374,3 +382,54 @@ class PrivateRecipeApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(recipe.ingredients.count(), 0)
+
+# สร้าง class ใหม่สำหรับ test upload files ทั้งหมดไปเลย
+# ที่เราทำแบบนี้เพราะว่าเราต้องการ setup ที่แตกต่าง
+class ImageUploadTests(TestCase):
+    """Tests for the image upload API."""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = get_user_model().objects.create_user(
+            'user@example.com',
+            'password123',
+        )
+        self.client.force_authenticate(self.user)
+        self.recipe = create_recipe(user=self.user)
+
+    # tearDown เหมือน setup แต่มันไม่ได้รันก่อน test method อื่นจะรันเหมือน setUp แต่จะรันหลังจาก test method อื่นรันเสร็จ นั้นเอง
+    def tearDown(self): # การถอดออก
+        self.recipe.image.delete()
+        # เพื่อลบ image หลังจาก test เสร็จ
+
+    def test_upload_image(self):
+        """Test uploading an image to a recipe."""
+        url = image_upload_url(self.recipe.id)
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
+            # สร้าง named temporary file
+            # tempfile เป็น helper module ที่ python เตรียมมาให้ ทำให้เรา create temporary files ได้
+            # ซึ่งใน block with นี้ เราจะมี temporary file เพราะเมื่อจบ block มันจะ clean up file
+
+            # ดังนั้นเราจึงสามารถสร้าง temporary image file เพื่อทดสอบ upload file ไปที่ endpoint
+            img = Image.new('RGB', (10, 10)) # คือ สร้าง image (จำลอง upload image form user) โดยใช้ Image library แล้วเก็บลง img variable
+            # สร้าง test image ที่มีขนาด 10 pixels
+            img.save(image_file, format='JPEG') # save img ที่สร้างแล้วเก็บใน memory (หรือเก็บลง ตัวแปรนั้นแหละ) ลง image_file ที่เป็น temporary file
+            image_file.seek(0) # เพื่อกลับไป pointer ที่จุดเริ่มต้นของ file เนื่องจากเมื่อ save file นั้น pointer จะไปอยู่ที่ end ของ file เลย seek ให้มันกลับมาอยู่ที่จุดเริ่มต้น เพื่อที่เราจะได้สามารถ upload มันในขั้นตอนต่อไป
+            payload = {'image': image_file} # สร้าง payload
+            res = self.client.post(url, payload, format='multipart')
+            # format='multipart' ก็เพราะว่าเราจะ upload มันโดยใช้ multipart form ซึ่งหมายความว่าตอนนี้ ตัวแปร payload ก็จำลองเป็น multipart form upload อยู่
+            # ในที่นี้ multipart ก็คือ type ของการ upload นั้นแหละ
+            # multipart จะมี text และมี binary data
+
+        self.recipe.refresh_from_db() # เพื่อ refresh recipe ที่เราพึง create ใน setUp เพราะเราพึง upload file เพิ่มไป
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn('image', res.data) # ต้องมี image field ใน res.data
+        self.assertTrue(os.path.exists(self.recipe.image.path)) # check ว่า path ของ image บน recipe exist มั้ย ซึ่งถ้ามันมีก็หมายความว่า การ upload image นั้น successfully
+
+    def test_upload_image_bad_request(self):
+        """Test uploading an invalid image.""" # ถ้า user ใส่ invalid image เข้ามา
+        url = image_upload_url(self.recipe.id)
+        payload = {'image': 'notanimage'} # ใส่เป็นแค่ test ลง image field เพราะเราคาดหวังให้มัน fail
+        res = self.client.post(url, payload, format='multipart')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

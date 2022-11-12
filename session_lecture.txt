@@ -72,3 +72,6 @@ ModuleNotFoundError: No module named 'core.models.uuid'; 'core.models' is not a 
 
 แล้วลองรัน test อีกครั้ง ซึ่งครั้งนี้ต้องผ่านเพราะเรา implement แล้ว
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[125. Write tests for uploading images]
+'docker-compose run --rm app sh -c "python manage.py test"' => ต้อง fail เพราะยังไม่ได้ implement

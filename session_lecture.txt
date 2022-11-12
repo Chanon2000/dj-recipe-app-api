@@ -100,3 +100,8 @@ re-run
 
 ลองรัน test อีกทีเพื่อความแน่ใจ
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[128. Summary]
+    - Added image upload feature
+    - Configured volumes
+    - Tested in browser

@@ -25,3 +25,72 @@ Steps we'll take
 
 video: The 4 best ways to deploy a Django application
 https://www.youtube.com/watch?v=IoxHUrbiqUo
+
+[137. Django deployment overview]
+
+สิ่งที่เราต้องทำเมื่อทำการ Deploying Django
+    1. Setup a proxy
+    2. Handle static / media files
+    3. Configuration app ของเราบน server
+
+
+Components ต่างๆสำหรับการ Deployment
+    - Persistent Data
+        # เมื่อ upload files มันไม่ควรเก็บลง container แต่ควรเก็บลงที่นี้ หรือ persistent volume
+        # ซึ่ง volume สามารถเข้าได้โดย containers ต่างๆที่อยู่ใน service
+    - WSGI (Django)
+        # WSGI => Web server gateway interface
+        # whiskey service
+    - Users
+
+    - Reverse Proxy
+        # คือที่ที่จะ accept request เข้า application
+        # นั้นคือทุก request ที่มาจาก internet มันจะไม่ตรงไปที่ Django service (หรือ whiskey service) แต่จะเข้าตรงนี้หรือproxyก่อน
+        Why use a reverse proxy?
+            - Best practice when deploying Django
+            - whiskey server ที่รัน python (หรือ web server gateway interface) มันไม่เหมาะกับการจัดการ requests เยอะๆ และมันสามารถ serve พวก images css js static files ได้และไม่มีประสิทธิภาพเลย
+                # whiskey server Not great at serving data
+            - Web servers นั้นมีประสิทธิภาพมาก ให้การ serve static files และจัดการ requests แบบเยอะๆ
+            (เราจะ setup reverse proxy ให้ใช้ web server application เพื่อให้เราสามารถ serve files ที่ web server หรือ reverse proxy นั้นแหละ มีประสิทธิภาพในการ serve ผ่าน proxy)
+
+        Application ที่เราจะใช้
+            - nginx => คือ web server ซึ่ง open source, fast, secure, production grade, very popular tool และเป็น tool ที่นิยมมากในการสร้าง reverse proxy or web server
+            - uWSGI => Whiskey server หรือ Web server gateway interface
+            - Docker Compose
+                # เพื่อเอาแต่ละอย่างมารวมกัน แล้ว serve มันใน server
+
+Docker Compose setup มีอะไรบ้างดังนี้
+    - app uWSGI (เพื่อ serve app ของเรา)
+        # ถ้า request เป็น static/media files จะไม่เข้าที่นี้แต่จะไปเข้าที่ proxy
+        # แต่ถา request ไม่ใช้ static/media files มันถึงจะมาเข้าที่ proxy และมาที่ Django ต่อ
+    - db
+    - proxy (nginx) รับ request/response
+        # จะ serve static/media file เลยโดยไม่ผ่าน django (จะตรงๆเข้า volumn ผ่าน proxy แล้ว django app จะไม่รู้ด้วยซำ้ว่ามี request นี้)
+    - volume
+        -static data (static/media)
+        -prostgres-data (data จาก database)
+            # เราเก็บ data ไว้ตรงนี้ทำให้ถึงแม้ว่า server จะ reboot นั้น data เราก็จะไม่หาย
+
+Handling configuration
+    - เราจะ configure deployed app อย่างไร?
+        -อย่างใส่ทุกอย่างลง Git (เพื่อ key, secret, password ต่างๆ)
+    - Various approaches (วิธีต่างๆในการจัดการ configure พวกนี้)
+        -Environment variables (เราจะใช้วิธีนี้)
+            # ซึ่งก็เป็นวิธีที่เราใช้ใน docker compose อยู่แล้ว
+        -Secret managers
+            # ซึ่งก็มีให้บริการในทุก cloud เช่น aws, google cloud แต่เราต้องเอา app ของเราไป deploy ที่ cloud นั้นๆ
+
+How configuration works
+    - Create .env file on server
+    - Set values in Docker Compose
+
+Using AWS
+    - We'll host our app on AWS
+        # Popular platform
+    - Students responsible for security and costs
+    - Must keep your account secure!
+        -Use MFA (multi-factor authentication เพื่อให้ account secure มากขึ้น)
+        -Use strong passwords
+        -Don't share your account details
+        -Keep your machine secure and update to date
+        -Delete unused accounts (ถ้าไม่ใช้แล้วควรลบทิ้ง เพื่อกันไม่ให้ใครเอาไปใช้)

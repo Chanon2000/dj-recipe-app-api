@@ -38,3 +38,6 @@ OpenAPI Schema
 
 [133. Implement tag and ingredient filtering]
 'docker-compose run --rm app sh -c "python manage.py test"' => รอบนี้ต้องผ่าน
+
+[134. Review filtering in browser]
+'docker-compose up'

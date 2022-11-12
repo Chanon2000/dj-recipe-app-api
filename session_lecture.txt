@@ -1,0 +1,26 @@
+[129. Filtering design]
+
+Filtering
+    - Filter recipes by ingredients / tags
+        # Find certain types of recipes
+    - Filter tags / ingredients by assigned
+        # List filter options for recipes
+    - Define OpenAPI parameters
+        # Update documentation
+
+example ของ request ที่เราจะทำใน api ในครั้งนี้
+    - สามารถ fiter recipes โดย tag(s)
+        GET /api/recipe/recipes/?tags=1,2,3
+    - สามารถ fiter recipes โดย ingredient(s)
+        GET /api/recipe/recipes/?ingredient=1,2,3
+    - Filter tags by assigned:
+        Get /api/recipe/tags/?assigned_only=1
+    - Filter ingredients by assigned:
+        Get /api/recipe/ingredients/?assigned_only=1
+
+OpenAPI Schema
+    - คือ auto generated schema ที่ สามารถใช้เพื่อสร้าง documentation ที่เราเห็นใน swagger หรือเป็น browser tool docs (โดย tool ที่ใช้คือ drf-spectacular จะ config ที่ code ที่เราเขียน)
+    - แต่ก็มีบางอย่างที่เราต้อง manually configured เอง
+        เช่น Custom query params (filtering)
+    - ใช้ DRF Spectacular extend_schema_view decorator
+        จาก DRF Spectacular Library ซึ่งทำให้เราสามารถเพิ่ม decorator เข้า view เพื่อ customizations documentation

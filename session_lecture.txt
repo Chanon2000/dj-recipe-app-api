@@ -27,3 +27,8 @@ OpenAPI Schema
 
 [130. Add tests for filtering recipes]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[131. Implement recipe filter feature]
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+การเขียน test ช่วยให้เวลาเราเพิ่ม feature เราสามารถตรวจสอบได้ว่า มันจะไม่ทำให้ code เก่าๆ เกิดปัญหา

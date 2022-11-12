@@ -32,3 +32,6 @@ OpenAPI Schema
 'docker-compose run --rm app sh -c "python manage.py test"'
 
 การเขียน test ช่วยให้เวลาเราเพิ่ม feature เราสามารถตรวจสอบได้ว่า มันจะไม่ทำให้ code เก่าๆ เกิดปัญหา
+
+[132. Add tests for filtering tags and ingredients]
+'docker-compose run --rm app sh -c "python manage.py test"'

@@ -1,0 +1,27 @@
+[136. Deployment plan]
+
+Various ways to deploy Django
+    - Directly on a server
+        -Run directly on server เลยโดยอาจใช้เช่น Nginx
+        -รันผ่าน Docker ใน server (ซึ่งคุณก็สามารถใช้แค่ Docker-compose เพื่อรัน app แบบง่ายๆ)
+
+    - ใช้ serverless Cloud
+        # โดย upload application ไปที่ service โดยเราแค่ publish code ของเราบน service แล้วเรื่องของ hardware มันจะจัดการให้เราเอง
+        ยกตัวอย่างเช่น Google Cloud Run / Google App Engine
+        AWS Elastic Beanstalk / ECS Fargate
+
+How we'll deploy
+    - เราจะใช้ Single VPS on AWS (หรือก็คือ EC2)
+        VPS = Virtual private server
+        คือ Virtual private server หรือก็คือ virtual machine ที่เราจะซื้อจาก aws
+    - และเราจะใช้ docker / docker compose เพื่อรัน application บน server นั้น
+        # เราจะมี EC2 1 instance และ เราจะรัน Docker service บน instance และมันก็จะสามารถเข้าถึงได้จาก outside website แล้ว user ก็จะสร้าง connect เข้ามาได้
+
+Steps we'll take
+    1. Configure project for deployment
+    2. Create server on AWS
+    3. Deploy app
+
+
+video: The 4 best ways to deploy a Django application
+https://www.youtube.com/watch?v=IoxHUrbiqUo

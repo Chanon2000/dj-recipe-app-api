@@ -35,3 +35,6 @@ OpenAPI Schema
 
 [132. Add tests for filtering tags and ingredients]
 'docker-compose run --rm app sh -c "python manage.py test"'
+
+[133. Implement tag and ingredient filtering]
+'docker-compose run --rm app sh -c "python manage.py test"' => รอบนี้ต้องผ่าน

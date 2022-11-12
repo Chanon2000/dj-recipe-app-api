@@ -98,7 +98,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# เพิ่ม docs ที่จะ extend หน้าบน class view เลย เพื่อจัดการ API documentation
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'assigned_only',
+                OpenApiTypes.INT, enum=[0, 1], # enum=[0, 1] เพื่อให้มีแค่ 0,1 ที่ใส่เข้ามาได้
+                description='Filter by items assigned to recipes.',
+            ),
+        ]
+    )
+)
 class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
                             mixins.UpdateModelMixin,
                             mixins.ListModelMixin,
@@ -109,7 +120,18 @@ class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
 
     def get_queryset(self):
         """Filter queryset to authenticated user."""
-        return self.queryset.filter(user=self.request.user).order_by('-name')
+        # return self.queryset.filter(user=self.request.user).order_by('-name')
+        # ทำที่ baseRecipe เลยเพื่อที่จะได้ทั้ง tags และ ingredients
+        assigned_only = bool( # bool() จะ convert value ด้านใน 0,1 ให้เป็น False, True
+            int(self.request.query_params.get('assigned_only', 0)) # คือกำหนด default value เป็น 0 เมื่อไม่มี assigned_only params เข้ามา
+        )
+        queryset = self.queryset
+        if assigned_only:
+            queryset = queryset.filter(recipe__isnull=False)
+
+        return queryset.filter(
+            user=self.request.user
+        ).order_by('-name').distinct()
 
 
 class TagViewSet(BaseRecipeAttrViewSet):

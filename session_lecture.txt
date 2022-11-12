@@ -94,3 +94,10 @@ Using AWS
         -Don't share your account details
         -Keep your machine secure and update to date
         -Delete unused accounts (ถ้าไม่ใช้แล้วควรลบทิ้ง เพื่อกันไม่ให้ใครเอาไปใช้)
+
+[138. Add uWSGI to project]
+
+เมื่อ setup ทุกอย่างเสร็จลอง build image ดูว่ามันจะมีปัญหาอะไรมั้ย
+'docker-compose build'
+
+uWSGI: https://pypi.org/project/uWSGI/

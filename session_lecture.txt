@@ -81,3 +81,22 @@ NamedTemporaryFile docs: https://docs.python.org/3/library/tempfile.html#tempfil
 'docker-compose run --rm app sh -c "python manage.py test"'
 
 imagefield docs: https://drf-spectacular.readthedocs.io/en/latest/faq.html#filefield-imagefield-is-not-handled-properly-in-the-schema
+
+[127. Review image uploading in browser]
+
+re-run
+'docker-compose down'
+'docker-compose up'
+
+ที่เส้น /api/recipe/recipes/{id}/upload-image/
+ให้เลือกเป็น 'application/x-www-form-urlencoded' เพื่อที่จะได้สามารถทำการ upload files ได้
+
+จะเจอ error TooManyFieldsSent at /api/recipe/recipes/4/upload-image/ เพราะเราเลือก 'application/x-www-form-urlencoded' ซึ่งมันผิด type ซึ่งแก้โดยเปลี่ยนไปเลือก 'multipart/form-data' แทน ก็จะ success
+{
+    "id": 4,
+    "image": "http://127.0.0.1:8000/static/media/uploads/recipe/bd0157bb-8989-485a-8fe9-b3f5877945c0.jpg"
+}
+ได้ url ของ image มาด้วย เมื่อเราเปิดก็จะได้ image นั้นที่ browser ซึ่ง imabe นี้มันเก็บใน volumes location (media files)
+
+ลองรัน test อีกทีเพื่อความแน่ใจ
+'docker-compose run --rm app sh -c "python manage.py test"'

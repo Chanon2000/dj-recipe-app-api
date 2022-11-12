@@ -91,7 +91,7 @@ class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail view."""
 
     class Meta(RecipeSerializer.Meta):
-        fields = RecipeSerializer.Meta.fields + ['description']
+        fields = RecipeSerializer.Meta.fields + ['description', 'image'] # เพื่อแสดง image ด้วย
 
 # Serializer สำหรับ upload images ไปที่ recipes
 class RecipeImageSerializer(serializers.ModelSerializer):

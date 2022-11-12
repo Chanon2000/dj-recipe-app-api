@@ -46,3 +46,5 @@ OpenAPI Schema
     - Added filtering recipes by tags/ingredients
     - Add filtering tags/ingredients by those assigned to recipes
     - Customised OpenAPI Schema
+
+schema custom docs: https://drf-spectacular.readthedocs.io/en/latest/customization.html

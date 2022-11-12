@@ -91,18 +91,14 @@ class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail view."""
 
     class Meta(RecipeSerializer.Meta):
-        fields = RecipeSerializer.Meta.fields + ['description', 'image'] # เพื่อแสดง image ด้วย
+        fields = RecipeSerializer.Meta.fields + ['description', 'image']
 
-# Serializer สำหรับ upload images ไปที่ recipes
+
 class RecipeImageSerializer(serializers.ModelSerializer):
     """Serializer for uploading images to recipes."""
-    # เราต้องการ accept image field เท่านั้น ไม่ได้ต้องการเอา field อื่นใน recipe object
 
-    # และเราจะทำแยก api เลยระหว่าง upload กับ recipe เพราะมันดีกว่าที่เราจะ upload 1 typr ของ data ไปที่ api
-    # เราไม่ต้องการจะ upload form data ที่เก็บทุก data ของ recipe ที่มี image อยู่ด้วย
-    # เพื่อให้ API data structures ดู clean และใช้ง่าย และเข้าใจง่าย
     class Meta:
         model = Recipe
-        fields = ['id', 'image'] # เอาแค่ id กับ image field ใน Recipe model
+        fields = ['id', 'image']
         read_only_fields = ['id']
         extra_kwargs = {'image': {'required': 'True'}}

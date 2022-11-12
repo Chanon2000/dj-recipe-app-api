@@ -1,6 +1,7 @@
 """
 Tests for models.
 """
+from unittest.mock import patch # ทำให้สามารถ mock สิ่งต่างๆ ตามที่ test นั้นๆต้องการ
 from decimal import Decimal
 
 from django.test import TestCase
@@ -88,3 +89,19 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(ingredient), ingredient.name)
+
+    @patch('core.models.uuid.uuid4') # เราใส่ decorator คือ patch เพื่อ patch uuid function
+    # โดย func นี้หลักๆ คือ generate a random string
+    # ซึ่งใน test นี้เราจะไม่ generate uuid จริงๆ เพราะมันจะดูยากเกินไปว่า uuid เราจะชื่ออะไรใน test  เราเลยจะ mock เอา
+    def test_recipe_file_name_uuid(self, mock_uuid):
+        """Test generating image path.""" # test การสร้าง path ไปที่ image
+        # เราจะสร้าง path โดยใช้ unique identifier (uuid) เพื่อให้มั้นใจว่าแต่ละ file จะมี unique name ในแต่ละ files ที่ upload
+        uuid = 'test-uuid' # นี้แหละ mock uuid
+        mock_uuid.return_value = uuid # mock uuid return_value
+        file_path = models.recipe_image_file_path(None, 'example.jpg')
+        # เป็น func ที่เราจะทำการ test ซึ่งคือ func ที่จะสร้าง path ไปที่ path ที่จะ uploaded image
+        # 'example.jpg' คือใส่ original name ของ file นั้น ก่อน upload
+        # เราใช้ uuid ใน func นี้ เราเลย  @patch('core.models.uuid.uuid4')
+        # None คือแทน Django ImageField
+
+        self.assertEqual(file_path, f'uploads/recipe/{uuid}.jpg') # check path ที่ generate

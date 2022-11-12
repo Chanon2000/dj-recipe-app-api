@@ -60,3 +60,15 @@ docs: https://docs.djangoproject.com/en/3.2/howto/static-files/ เพิ่ม�
 มันก็จะทำการ rebuild image และเพิ่ม directories ใน Docker image ให้เรา
 
 และที่เราเพิ่มใน docker-compose ก็คือทำการสร้าง volumes และ map volumes กับ local dir
+
+[124. Modify recipe model]
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+fail นี้เพราะเราไม่ได้ import package นี้เข้า models.Model
+ModuleNotFoundError: No module named 'core.models.uuid'; 'core.models' is not a package
+
+เนื่องจากเราเพิ่ม image field เข้า recipe model เราเลยต้อง makemigrations
+'docker-compose run --rm app sh -c "python manage.py makemigrations"'
+
+แล้วลองรัน test อีกครั้ง ซึ่งครั้งนี้ต้องผ่านเพราะเรา implement แล้ว
+'docker-compose run --rm app sh -c "python manage.py test"'

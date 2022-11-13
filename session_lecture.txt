@@ -101,3 +101,42 @@ Using AWS
 'docker-compose build'
 
 uWSGI: https://pypi.org/project/uWSGI/
+
+[139. Create proxy configs]
+
+สร้าง proxy configuration และ Dockerfile
+
+default.conf.tpl => Default.configuration.template
+จะเป็น file ที่เก็บ value บางอย่างเอาไว้ เพื่อเมื่อรัน proxy (nginx คือที่เราจะใช้) จริงๆ เราจะเอา file นี้เข้าไปใส่ในบางสิ่งเพื่อให้มันรัน ไม่ได้เอา file นี้ไม่รันตรงๆ
+
+configuration ของ nginx ต้องการ ; ที่ จุดสิ้นสุดของแต่ละบรรทัด
+
+# เป็น configuration block
+server {
+    # แต่ละ block นี้จะ executed เป็น order จากบนลงล่าง
+    listen ${LISTEN_PORT};
+    # port ที่ server จะ listen on
+    # แล้วผ่านเข้าไปใน service
+    # ใส่เป็น variable (LISTEN_PORT) ซึ่งเดี๋ยวต้องเอา var พวกนี้ใส่เข้า project ด้วย
+
+    # location block เอาไว้ map url ที่ผ่านเข้ามาใน server
+    location /static { # บอกว่า url ใหนที่เริ่มจาก /static มันจะไปที่ alias /vol/static ซึ่งก็คือ volume ที่เก็บ static และ media files ของ app เรา
+        alias /vol/static;
+    }
+
+    # block location นี้เอาไว้จัดการ requests ที่เหลือที่ไม่เจอ location block ด้านบน
+    # ให้แต่ละ key กับ value อยู่ในระดับเดียวกัน เลยเว้นวรรคแบบนั้น
+    location / {
+        uwsgi_pass              ${APP_HOST}:${APP_PORT}; # เช่น localhost:8000 เป็นต้น ซึ่งต้องเป็นที่ที่ whiskey server รันอยู่ (และเราต้อง configure nginx server ให้สามารถ connect กับ service นี้ได้)
+        include                 /etc/nginx/uwsgi_params;
+        # ต้อง include whiskey params คือ parameters ที่จำเป็นสำหรับ http request เพื่อ process ใน whiskey (ซึ่งเดี๋ยวเราต้อง configurate มันต่อ โดยหลักๆก็คือ list ของ parameters ที่จะใส่ลง http request มาที่ running service)
+        client_max_body_size    10M; # คือกำหนดขนาด maximum body size of the request ที่จะผ่านเข้ามา # เช่น maximum image ที่เราจะสามารถ upload ได้คือ 10M
+    }
+}
+
+ต่อมาสร้าง uwsgi_params file ซึ่งมันมี doc สำหรับ param ที่เรากำหนดให้
+docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-params-file
+
+เรา copy มาวางเลยไม่ต้องคิดอะไรเยอะ (ค่อยศึกษาที่หลัง)
+
+จากนั้นก็สร้าง run.sh เพื่อ start proxy service ของเรา

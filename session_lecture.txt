@@ -232,7 +232,7 @@ mick@18791955
     ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCZMMwUGMCBEHTaQa2xmJOxK/PZeaKP3CthOmaXmYmb0AqBXzc/EWpNs0v1P4ChsWyL1vqh0IKDGpfJ3VJauqYA1+NFVEsGrjycfS06EHv4VM57opTg9wl9R1LPcXgxy9VRQZ8tZ/Fn6rjT7ag2XgpHv0LG62LMA/V8AxG3cFU8NvosqMMy8VB9row9hln0nlVlXwq4p+fL00xZQYnn1iww+YEQlmMKPCyM7AA6v2zkrmWGzZ6KNqRnL2Slg7hx3IV6RnWTSvLg4I6RXZO6umZGu3WxSj3xL6sXK2dMrMDFmTE46QDQw2BiQKNA5NbbabwGZu8aDHd08hR1Byn+9j+XjQhgUMypbbZ5yiYIGNhByIEmuBVraeqIHwDZnrgeamVkppWbEiIUBVskRHeBNp9hA2n6hC9RwusflDR/DkVSCjKRmFuwaykxUulJg+jv2dhJiyiQ3i3r4+qAoAXnU6Um15/wXaXwGZ0nvbqZRBEk6vSDxRp4L6hImdLz0EA+65kkggTr2i+Hk4JVZHZaqaRWozh1+by3sBVqJAk0F18BwS3yC3cDChsw4WO6v8YWorqcmu/pjmGgJaHCcm0Vb/t0T+4BkYTt8pfqk+nu7IgAsFh3W6Q/j9T6VC4sjbvolShaCsim2XjYEbRUQ8YK87HCy1xE6KX054Qk/CeUMyQiMw== chanonmanojit@MacBook-Pro-khxng-chanon.local
     "
 
-หลังจากสร้าง key เสร็จ ก็ไปที่ console aws แล้วไปที่ EC2 dashboard
+: หลังจากสร้าง key เสร็จ ก็ไปที่ console aws แล้วไปที่ EC2 dashboard
 -> ไปที่ Key Pairs Menu
     ซึ่งเป็น security keys เพื่อเข้าถึง servers ที่คุณสร้างใน EC2
 -> คลิก Actions -> Import key pair (เพราะว่าเราสร้าง key ที่ localแล้วทำให้เราไม่ต้องคลิกที่ Create key pair เพื่อสร้าง key)
@@ -241,3 +241,37 @@ mick@18791955
 เท่านี้ ก็จัดการ key pairs สำเร็จ ทำให้ไม่ว่าคุณจะสร้าง server ใหม่มา machine ที่มี key นี้ก็สามารถเข้าถึง server ได้
 
 ซึ่ง key ตรงนี้จะ 1 key สำหรับ 1 machine เท่านั้น ถ้าใช้ที่เครื่องอื่นด้วยคุณต้องสร้าง key เฉพาะของเครื่องนั้นด้วย
+
+[147. Create EC2 instance]
+
+: ไปที่ EC2 dashbaord
+-> คลิกปุ่ม Launch instance
+-> Name(ชื่อของ instance): recipe-api-dev-server
+-> Number of instances: 1 (ถ้าใส่ 50 คุณก็จะโดนเก็บเงิน 50 instances แต่ยังไงก็ตามให้เลือกจำนวน instance ตามที่เราต้องการ)
+-> Application and OS Images: เลือก Amazon Linux
+-> Instance type: t2.micro (Free tier eligible)
+-> Key pair (login): เลือก mick-local-machine (ที่คุณพึงสร้าง)
+-> Allow SSH traffic from: Anywhere 0.0.0.0/0 (เพื่อให้เข้าถึง server โดย ssh ที่ใหนก็ได้)
+-> ติ๊ก Allow HTTP traffic from the internet
+-> Configure storage: เอาแบบตำ่สุด แต่เนื่อจจาก free tier มันให้ถึง 30GB ก็ใส่ 30
+-> คลิก Lanch instance
+
+คุณสร้าง instance สำเร็จ
+
+: ไปที่ EC2 dashboard
+-> ไปที่ instances menu
+
+จะเห็น instance ที่คุณพึงสร้าง
+
+ทำการ connect ไปที่ instance โดย
+: click ที่ instance ID
+-> copy id ที่ Public IPv4 address column
+-> กลับมาที่ terminal ที่ .ssh folder ให้ทำการ
+    -> ssh-add aws_id_rsa จากนั้นก็ใส่ password ที่คุณเคยตั้งเอาไว้ตอนสร้าง aws_id_rsa
+    -> ssh ec2-user@50.16.76.95 (50.16.76.95 คือ Public IP ของ EC2 ที่เราสร้าง)
+    -> Are you sure you want to continue connecting: yes
+
+    ซึ่งเราก็จะเข้าถึง server EC2 ที่เราสร้าง ได้สำเร็จ
+    "
+    [ec2-user@ip-172-31-30-220 ~]$
+    "

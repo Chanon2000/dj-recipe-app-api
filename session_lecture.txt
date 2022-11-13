@@ -146,3 +146,13 @@ docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-p
 เมื่อ config เสร็จก็ลองทดสอบ build โดยการ
     "cd proxy"
     "docker build ."
+
+
+[141. Handling configuration]
+
+เราจะใช้ environment variables เพื่อจัดการรัน app
+    - Store configuration in a file
+    - Retrieve values with Docker Compose
+    - Pass to applications
+
+เราจะสร้าง .env เพื่อเก็บ variable ต่างๆ แล้วเอา var มาใส่ใน docker-compose file และก็สามารถเอาไปกำหนดใน python code ได้เช่นกัน

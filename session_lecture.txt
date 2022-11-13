@@ -156,3 +156,9 @@ docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-p
     - Pass to applications
 
 เราจะสร้าง .env เพื่อเก็บ variable ต่างๆ แล้วเอา var มาใส่ใน docker-compose file และก็สามารถเอาไปกำหนดใน python code ได้เช่นกัน
+
+[142. Create docker compose config]
+
+.env.sample
+เพื่อสร้าง template env ที่สามารถใช้บน server ได้ และเมื่อเราจะ deploy เราก็แค่ re-name file นี้เป็น
+.env

@@ -341,3 +341,18 @@ DJANGO_SECRET_KEY=qweqeqwedsfsdfrgdf # ใส่เป็น random string อ�
 DJANGO_ALLOWED_HOSTS=127.0.0.1 # เอาจาก Public IPv4 DNS ที่ EC2 instance console # ซึ่งถ้าคุณเพิ่ม custom domain คุณก็ต้องมาเพิ่มตรงนี้ด้วย
 -> save file
 -> cat .env => เพื่อดูว่าข้อมูลมีการเปลี่ยนแปลงแล้วหรือยัง
+
+[151. Run service]
+
+ที่ [ec2-user@ip-172-31-30-220 dj-recipe-app-api]$
+-> "docker-compose -f docker-compose-deploy.yml up -d"
+    รันบน demon mode นั้นหมายความว่ามันจะรันใน background ไม่ใช่ foreground
+-> copy Public IPv4 DNS: ec2-50-16-76-95.compute-1.amazonaws.com
+-> เอาไปเปิดที่ browser : http://ec2-50-16-76-95.compute-1.amazonaws.com/admin เพราะถ้า / เฉยๆ app ของเราจะไม่เจออะไรอยู่แล้ว
+-> จะเจอหน้า admin
+-> กลับไปที่ remote console โดยเป็น dj-recipe-app-api directory
+-> 'docker-compose -f docker-compose-deploy.yml run --rm app sh -c "python manage.py createsuperuser"' เพื่อสร้าง superuser ที่ remote
+email: admin@example.com
+pass: 123456
+-> แล้วเอาไป login ที่ หน้า admin
+-> ถ้าอยากเห็น logs ให้ทำการรัน 'docker-compose -f docker-compose-deploy.yml logs'

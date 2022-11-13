@@ -319,3 +319,25 @@ command นี้จะทำการ install docker-compose
 
 -> "sudo chmod +x /usr/local/bin/docker-compose" => เพื่อที่เราจะได้รัน docker-compose command ได้
     +x คือ เพื่อให้ execute permission ไปที่ path ที่กำหนด
+
+[150. Clone and configure project]
+
+-> ไป copy ssh ของ repository ของ project ที่จะ deploy ก่อน เช่น
+'git@github.com:Chanon2000/dj-recipe-app-api.git'
+
+ที่ [ec2-user@ip-172-31-30-220 ~]$
+-> 'git clone git@github.com:Chanon2000/dj-recipe-app-api.git'
+-> "ls" จะเห็น dj-recipe-app-api ของเราถูก clone มาแล้ว
+-> "cd dj-recipe-app-api"
+-> "ls -la" => เพื่อให้มั้นใจว่าคุณ push .env.sample file ไปด้วยแล้ว
+    ถ้าไม่มีก็ ให้ถูก push code ที่ local ขึ้น origin ก่อน จากนั้นก็ "git pull origin" ที่ remote นี้
+-> "cp .env.sample .env" => สร้าง file ชื่อ .env จาก .env.sample
+-> "nano .env" หรือ "vi .env" ก็ได้ เพิ่มเปิด editor ที่ .env file
+-> แล้วทำการตั้งรหัสต่างๆใหม่ที่นั้นเลย
+DB_NAME=recipedb
+DB_USER=recipeuser
+DB_PASS=mick1879
+DJANGO_SECRET_KEY=qweqeqwedsfsdfrgdf # ใส่เป็น random string อะไรก็ได้เลย
+DJANGO_ALLOWED_HOSTS=127.0.0.1 # เอาจาก Public IPv4 DNS ที่ EC2 instance console # ซึ่งถ้าคุณเพิ่ม custom domain คุณก็ต้องมาเพิ่มตรงนี้ด้วย
+-> save file
+-> cat .env => เพื่อดูว่าข้อมูลมีการเปลี่ยนแปลงแล้วหรือยัง

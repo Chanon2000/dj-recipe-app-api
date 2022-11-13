@@ -20,13 +20,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g96#!)-d#=_i%e3n0w3!+=5_28@zcw!l6b+5tv6l37bn4kf0#o'
+# เราไม่ควร commit key นี้เข้า git repository
+SECRET_KEY = os.environ.get('SECRET_KEY', 'changeme')
+# รับ SECRET_KEY จาก configured environment variables ถ้าไม่มีก็จะมี default value เป็น 'changeme' (เพื่อใช้ใน local developemnt)
+# 'django-insecure-g96#!)-d#=_i%e3n0w3!+=5_28@zcw!l6b+5tv6l37bn4kf0#o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get("DEBUG", 0))) # 0 = False, 1 = True ทำแบบนี้เนื่องจาก env var มันเก็บได้แค่ string (bool เก็บไม่ได้)
+# เราทำการเปลี่ยน string ที่มาจาก DEBUG เป็น int ก่อนแล้วค่อยเปลี่ยนเป็น bool
+# ควรเป็น True เมื่อรัน development locally
+# False เมื่อ deployment app เพื่อเวลามัน error user จะได้ไม่เห็นข้อมูลมากเกินไป
 
+
+# allowed hosts คือ security mechanism เพื่อให้มั้นใจว่า Django app สามารถเข้าภึงได้ตาม hostname ที่ระบุใน list
+# กำหนด hostname ที่เราจะเข้าถึง application นี้ได้ผ่าน hostname นี้
 ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS.extend(
+    filter(
+        None, # ถ้าไม่มี ALLOWED_HOSTS มันก็จะเป็น [] empty list เพราะเรา filter ออกโดย None
+        os.environ.get("ALLOWED_HOSTS", '').split(','),
+        # ทำแบบทำให้เรา support การกำหนด multiple allowed hosts ใน configuration
+    )
+)
 
 # Application definition
 

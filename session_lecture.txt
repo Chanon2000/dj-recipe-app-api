@@ -162,3 +162,24 @@ docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-p
 .env.sample
 เพื่อสร้าง template env ที่สามารถใช้บน server ได้ และเมื่อเราจะ deploy เราก็แค่ re-name file นี้เป็น
 .env
+
+[143. Update Django settings]
+
+เราจะมาแก้ไข setting.py file เพื่อให้มันใช้ configured environment variables
+
+สร้าง .env ขึ้นมา โดย file นี้จะเก็บ secret จริงๆ (ซึ่ง file นี้ จะ auto ถูก ignore โดย git)
+และเป็น file ที่จะset ตัวแปรต่างๆเพื่อใช้ใน configuration สำหรับ deployed application
+
+ส่วน .env.sample นั้นแค่เอามาเก็บไว้เฉยๆ จะได้ไม่ลืม
+
+เพื่อทดสอบ deployment environment ก่อนเราจะไป deploy จริงๆที่ server
+
+เพื่อ clear container ที่มีออกก่อน
+'docker-compose -f docker-compose-deploy.yml down'
+
+เพื่อ start server แบบ deployment environment
+'docker-compose -f docker-compose-deploy.yml up'
+
+จากนั้นลองไปที่ http://127.0.0.1:8000/api/docs/ จะเห็น app ของเรารันอยู่ นั้นแปลว่า deployment environment รันได้ไม่มีปัญหาอะไร
+
+(อย่าลืมเปลี่ยน port กลับเป็น 80 ที่ docker-compose-deploy.yml ด้วย)

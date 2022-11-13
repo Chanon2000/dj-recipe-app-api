@@ -37,6 +37,7 @@ services:
       - app
     ports:
       - 80:8000 # 80 จาก local machine และ 8000 จากใน container
+      # เปลี่ยนจาก 80 เป็น 8000 เพราะโดยปกติ localhost จะเอาไปใช้แล้ว
     volumes:
       - static-data:/vol/static
 

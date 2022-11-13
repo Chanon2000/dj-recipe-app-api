@@ -369,3 +369,9 @@ pass: 123456
 -> "docker-compose -f docker-compose-deploy.yml up --no-deps -d app" => ทำการ restart app
     --no-deps คือ no dependencies ทำให้มันจะไม่ restart dependencies
 -> ไปดู ที่เรา deploy ที่ browser จะเห็นว่ามีเส้น health-check เพิ่มเข้ามา
+
+[153. Deployment summary]
+    - Configured project for deployment
+    - Created EC2 server instance
+    - Deployed application to server
+    - Updated service

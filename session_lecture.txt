@@ -300,3 +300,22 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDHvrmqCeFi+JStc6e/KZVA8dfMxu6hhz0PhJcXo7VE
 
 
 docs จากผู้สอนสำหรับ deployment: https://github.com/LondonAppDeveloper/build-a-backend-rest-api-with-python-django-advanced-resources/blob/main/deployment.md#deployment
+
+[149. Install Docker, Compose and Git]
+
+ที่ terminal ที่เชื่อม ssh ไปที่ remote อยู่
+: "sudo yum install git -y"
+    เนื่องจาก server มี yum package manager อยู่แล้ว
+-> "sudo amazon-linux-extras install docker -y" => install docker บน server
+-> "sudo systemctl enable docker.service" => เพื่อ enable docker service บน system
+-> "sudo systemctl start docker.service" => เพื่อ start docker บน system
+-> "sudo usermod -aG docker ec2-user" => ให้สิทธิ user ชื่อ ec2-user ทำการรัน docker containers
+-> "exit" => เพื่อ logout ออกจาก server กลับเข้า terminal ปกติ
+-> แล้ว "ssh ec2-user@50.16.76.95" => เพื่อกลับเข้าไปใหม่ ทำให้ user มี permissions ที่คุณพึงเพิ่มเข้าไป
+
+install docker-compose
+-> "sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose"
+command นี้จะทำการ install docker-compose
+
+-> "sudo chmod +x /usr/local/bin/docker-compose" => เพื่อที่เราจะได้รัน docker-compose command ได้
+    +x คือ เพื่อให้ execute permission ไปที่ path ที่กำหนด

@@ -212,3 +212,32 @@ IAM user ที่เป็น administrative
 mick
 mick@18791955
 
+[146. Upload SSH Key to AWS]
+
+เราจะสร้าง ssh key สำหรับ aws account ซึ่งเราสามารถใช้ในทุก connect service ต่างๆใน account นั้นได้
+
+"cd ~/" => เพื่อไปที่ root directory
+"ls -la" => เพื่อหา .ssh folder
+"cd .ssh" => ไปที่ .ssh folder
+
+เพื่อสร้าง ssh key ใหม่ ในนี้
+    "ssh-keygen -t rsa -b 4096"
+    Enter file in which to save the key: "/Users/chanonmanojit/.ssh/aws_id_rsa"
+    Enter passphrase (empty for no passphrase): 18791955
+
+    ลอง "ls" จะเห็น aws_id_rsa ที่คุณพึงสร้าง ซึ่งเป็น private key ใน local machine เพราะเราจะไม่ share ให้ใคร
+
+    cat aws_id_rsa.pub => จะเห็น content ข้างใน aws_id_rsa.pub ของเรา แล้วก็ copy มาได้เลย
+    "
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCZMMwUGMCBEHTaQa2xmJOxK/PZeaKP3CthOmaXmYmb0AqBXzc/EWpNs0v1P4ChsWyL1vqh0IKDGpfJ3VJauqYA1+NFVEsGrjycfS06EHv4VM57opTg9wl9R1LPcXgxy9VRQZ8tZ/Fn6rjT7ag2XgpHv0LG62LMA/V8AxG3cFU8NvosqMMy8VB9row9hln0nlVlXwq4p+fL00xZQYnn1iww+YEQlmMKPCyM7AA6v2zkrmWGzZ6KNqRnL2Slg7hx3IV6RnWTSvLg4I6RXZO6umZGu3WxSj3xL6sXK2dMrMDFmTE46QDQw2BiQKNA5NbbabwGZu8aDHd08hR1Byn+9j+XjQhgUMypbbZ5yiYIGNhByIEmuBVraeqIHwDZnrgeamVkppWbEiIUBVskRHeBNp9hA2n6hC9RwusflDR/DkVSCjKRmFuwaykxUulJg+jv2dhJiyiQ3i3r4+qAoAXnU6Um15/wXaXwGZ0nvbqZRBEk6vSDxRp4L6hImdLz0EA+65kkggTr2i+Hk4JVZHZaqaRWozh1+by3sBVqJAk0F18BwS3yC3cDChsw4WO6v8YWorqcmu/pjmGgJaHCcm0Vb/t0T+4BkYTt8pfqk+nu7IgAsFh3W6Q/j9T6VC4sjbvolShaCsim2XjYEbRUQ8YK87HCy1xE6KX054Qk/CeUMyQiMw== chanonmanojit@MacBook-Pro-khxng-chanon.local
+    "
+
+หลังจากสร้าง key เสร็จ ก็ไปที่ console aws แล้วไปที่ EC2 dashboard
+-> ไปที่ Key Pairs Menu
+    ซึ่งเป็น security keys เพื่อเข้าถึง servers ที่คุณสร้างใน EC2
+-> คลิก Actions -> Import key pair (เพราะว่าเราสร้าง key ที่ localแล้วทำให้เราไม่ต้องคลิกที่ Create key pair เพื่อสร้าง key)
+-> Name: mick-local-machine -> เอา key ที่ copy มาใส่ -> คลิก Import key pair
+
+เท่านี้ ก็จัดการ key pairs สำเร็จ ทำให้ไม่ว่าคุณจะสร้าง server ใหม่มา machine ที่มี key นี้ก็สามารถเข้าถึง server ได้
+
+ซึ่ง key ตรงนี้จะ 1 key สำหรับ 1 machine เท่านั้น ถ้าใช้ที่เครื่องอื่นด้วยคุณต้องสร้าง key เฉพาะของเครื่องนั้นด้วย

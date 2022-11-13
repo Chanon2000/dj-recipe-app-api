@@ -163,6 +163,8 @@ docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-p
 เพื่อสร้าง template env ที่สามารถใช้บน server ได้ และเมื่อเราจะ deploy เราก็แค่ re-name file นี้เป็น
 .env
 
+Environment variables in Compose docs: https://docs.docker.com/compose/environment-variables/
+
 [143. Update Django settings]
 
 เราจะมาแก้ไข setting.py file เพื่อให้มันใช้ configured environment variables
@@ -275,3 +277,23 @@ mick@18791955
     "
     [ec2-user@ip-172-31-30-220 ~]$
     "
+
+[148. Setup GitHub deploy key]
+
+เมื่อคุณเข้าถึง ssh ไปที่ server ได้แล้ว [ec2-user@ip-172-31-30-220 ~]$
+: "ssh-keygen -t ed25519 -b 4096"
+    ed25519 คืออีก type นึงของ key
+-> Enter file in which to save the key (/home/ec2-user/.ssh/id_ed25519): Enter ไปเลย
+-> Enter passphrase (empty for no passphrase): Enter ไปเลย (คือมันจะเป็น blank value)
+-> cat ~/.ssh/id_ed25519.pub เพื่อ output public key
+"
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDHvrmqCeFi+JStc6e/KZVA8dfMxu6hhz0PhJcXo7VE ec2-user@ip-172-31-30-220.ec2.internal
+"
+อันนี้คือเราสร้างที่ remote server
+-> ไปที่ repositoryของ project นี้ที่ github -> ไปที่ Deploy keys -> Add deploy key
+-> Title: server
+-> Key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDHvrmqCeFi+JStc6e/KZVA8dfMxu6hhz0PhJcXo7VE ec2-user@ip-172-31-30-220.ec2.internal
+(ไม่ต้องกำหนด Allow write access เพราะสิ่งที่เราจะทำกับ server คือ pull code ลง เราไม่จำเป็นต้อง push code จาก server กลับมาให้เรา)
+-> คลิก Add Key
+
+คุณก็จะมี server key เพิ่มเข้า project

@@ -297,3 +297,6 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILDHvrmqCeFi+JStc6e/KZVA8dfMxu6hhz0PhJcXo7VE
 -> คลิก Add Key
 
 คุณก็จะมี server key เพิ่มเข้า project
+
+
+docs จากผู้สอนสำหรับ deployment: https://github.com/LondonAppDeveloper/build-a-backend-rest-api-with-python-django-advanced-resources/blob/main/deployment.md#deployment

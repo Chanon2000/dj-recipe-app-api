@@ -375,3 +375,11 @@ pass: 123456
     - Created EC2 server instance
     - Deployed application to server
     - Updated service
+
+[155. Upgrading to Django 4]
+
+แก้ requirements file เสร็จก็ทำการ build
+'docker-compose build'
+
+แล้วก็ลองทดสอบทั้ง 3 command นี้
+'docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py test && flake8"'

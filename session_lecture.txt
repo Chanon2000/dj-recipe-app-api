@@ -183,3 +183,18 @@ docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-p
 จากนั้นลองไปที่ http://127.0.0.1:8000/api/docs/ จะเห็น app ของเรารันอยู่ นั้นแปลว่า deployment environment รันได้ไม่มีปัญหาอะไร
 
 (อย่าลืมเปลี่ยน port กลับเป็น 80 ที่ docker-compose-deploy.yml ด้วย)
+
+[144. Creating a virtual server]
+
+สิ่งที่เราจะทำต่อไปคือ
+    - Create AWS account and user
+    - Login to console
+    - Create new virual server
+
+AWS Costs => calcuator.aws (เพื่อคำนวณราคาที่เราจะต้องจ่าย)
+
+หลังจากสร้าง server แล้ว
+
+Connecting to the server
+    - Connect via SSH (บน terminal)
+    - Use same SSH key as for GitHub

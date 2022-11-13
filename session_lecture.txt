@@ -140,3 +140,9 @@ docs: https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-p
 เรา copy มาวางเลยไม่ต้องคิดอะไรเยอะ (ค่อยศึกษาที่หลัง)
 
 จากนั้นก็สร้าง run.sh เพื่อ start proxy service ของเรา
+
+[40. Create proxy Dockerfile]
+
+เมื่อ config เสร็จก็ลองทดสอบ build โดยการ
+    "cd proxy"
+    "docker build ."

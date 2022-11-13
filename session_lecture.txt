@@ -356,3 +356,16 @@ email: admin@example.com
 pass: 123456
 -> แล้วเอาไป login ที่ หน้า admin
 -> ถ้าอยากเห็น logs ให้ทำการรัน 'docker-compose -f docker-compose-deploy.yml logs'
+
+[152. Updating service]
+เพื่อ deploy code ที่ update ไปที่ server
+'docker-compose down'
+'docker-compose run --rm app sh -c "python manage.py test"'
+
+-> เมื่อเพิ่ม feature และ test เสร็จแล้วก็ push ขึ้น github
+-> ที่ remote terminal dj-recipe-app-api dir
+-> "git pull origin"
+-> "docker-compose -f docker-compose-deploy.yml build app" => เพื่อ build app ใหม่เนื่องจากมี code ใหม่ pull ลงมา
+-> "docker-compose -f docker-compose-deploy.yml up --no-deps -d app" => ทำการ restart app
+    --no-deps คือ no dependencies ทำให้มันจะไม่ restart dependencies
+-> ไปดู ที่เรา deploy ที่ browser จะเห็นว่ามีเส้น health-check เพิ่มเข้ามา
